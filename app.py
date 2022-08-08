@@ -40,11 +40,13 @@ def after_request(response):
 
 
 @app.route("/")
-@login_required
 def index():
     """Show portfolio of stocks"""
-    return render_template("dashboard.html")
+    return render_template("index.html")
 
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html")
 
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
