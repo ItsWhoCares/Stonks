@@ -1,72 +1,202 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.88.1">
-    <title>SignUp</title>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="shortcut icon" href="/static/Images/favicon.ico" />
+		<link
+			href="https://fonts.googleapis.com/css?family=Rubik:400,700,700i&display=swap"
+			rel="stylesheet"
+		/>
+    <link
+			href="/static/landingpage.css"
+			rel="stylesheet"
+		/>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
+    <link
+			href="/static/landingmanu.css"
+			rel="stylesheet"
+		/>
 
-    
+    <link
+			href="/static/main.css"
+			rel="stylesheet"
+		/>
+    <link
+			href="/static/login_register.css"
+			rel="stylesheet"
+		/>
 
-    <!-- Bootstrap core CSS -->
-<link href="/static/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no"
+		/>
+		<meta
+			name="Description"
+			content="Application for trading stocks with virtual money"
+		/>
+		<meta name="theme-color" content="#5eb5f8" />
 
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
+		<link rel="manifest" href="/static/manifest.json" />
 
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style>
+		<title>Stonks</title>
+	</head>
 
-    
-    <!-- Custom styles for this template -->
-    <link href="/static/signin.css" rel="stylesheet">
-  </head>
-  <body class="text-center">
-<div class="card mx-auto" style="width: 25rem;"><div class="card-body p-4">   
-<main class="form-signin">
-  <form action="/register" method="post">
-    <img class="mb-2" src="/static/dalalstreet512.png" alt="" width="72" height="57">
-    <h1 class="h3 mb-3 fw-normal">Create an account</h1>
 
-    <div class="form-floating mb-3">
-        <input type="username" class="form-control" id="floatingInput" name="username" placeholder="username">
-        <label for="floatingInput">Username</label>
+	<body>
+		<noscript
+			>You need to enable javascript to use this application.</noscript
+		>
+		<main id="root">
+
+      <div class="container">
+        <div class="landing-page">
+      <nav class="header">
+        <div class="header__logo">
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+     width="200" height="30" viewBox="0 0 101.968 101.968">
+  <g>
+    <g>
+      <path d="M24.715,47.432L7.968,64.86v29.406c0,0.828,0.671,1.5,1.5,1.5h20.334c0.828,0,1.5-0.672,1.5-1.5V49.158l-4.69-1.726
+        H24.715z"/>
+      <path d="M66.135,61.1H45.801c-0.828,0-1.5,0.672-1.5,1.5v31.666c0,0.828,0.672,1.5,1.5,1.5h20.334c0.829,0,1.5-0.672,1.5-1.5V62.6
+        C67.635,61.772,66.964,61.1,66.135,61.1z"/>
+      <path d="M101.724,29.49c-0.777,0.406-1.652,0.621-2.53,0.621c-1.276,0-2.521-0.45-3.5-1.27l-3.694-3.088l-13.365,14.58v53.934
+        c0,0.828,0.672,1.5,1.5,1.5h20.334c0.829,0,1.5-0.672,1.5-1.5v-64.93C101.885,29.387,101.81,29.445,101.724,29.49z"/>
+      <path d="M57.797,54.094c1.144,0.419,2.424,0.108,3.248-0.788l30.839-33.643l7.217,6.032c0.353,0.294,0.847,0.349,1.254,0.136
+        c0.407-0.214,0.646-0.648,0.605-1.107L99.396,7.235c-0.055-0.625-0.606-1.086-1.231-1.029l-17.49,1.563
+        c-0.458,0.041-0.846,0.354-0.982,0.791C79.646,8.706,79.631,8.854,79.644,9c0.026,0.294,0.167,0.572,0.403,0.769l7.229,6.043
+        L57.98,47.769L24.535,35.463c-1.118-0.41-2.373-0.121-3.198,0.735l-20.5,21.333c-1.148,1.195-1.11,3.095,0.084,4.242
+        c0.583,0.561,1.332,0.837,2.079,0.837c0.788,0,1.574-0.309,2.164-0.921l19.141-19.92L57.797,54.094z"/>
+    </g>
+  </g>
+  <g>
+  </g>
+  <g>
+  </g>
+  <g>
+  </g>
+  <g>
+  </g>
+  <g>
+  </g>
+  <g>
+  </g>
+  <g>
+  </g>
+  <g>
+  </g>
+  <g>
+  </g>
+  <g>
+  </g>
+  <g>
+  </g>
+  <g>
+  </g>
+  <g>
+  </g>
+  <g>
+  </g>
+  <g>
+  </g>
+  </svg>
+  
+          <h3>Stonks</h3>
+        </div>
+
+
+
+      <ul class="header__menu">
+          <a href="/">
+              <li>
+              <button
+               type="submit"
+               class="header__button-register"
+             >
+               HOME
+            </button>
+          </li>
+        </a>
+        <a href="/login">
+            <li>
+              <button
+               type="submit"
+               class="header__button-register"
+              >
+               LOGIN
+              </button>
+            </li>
+        </ul>
+    </a>
+
+      </nav>
+      <section class="limiter">
+				<LandingMenu
+					name="HOME"
+					url="/"
+					name2="REGISTER"
+					url2="/register"
+				/>
+				<div class="container-register">
+					<div class="wrap-register">
+						
+						<form action="/register" method="post" class="register-form validate-form">
+							<span class="register-form-title">
+								Register
+							</span>
+
+              <div class="wrap-input ">
+								<input
+									class="input"
+									type="text"
+									name="username"
+                  id="username"
+									placeholder="Username"
+									required
+								/>
+							</div>
+
+							<div class="wrap-input ">
+								<input
+									class="input"
+									type="text"
+									name="email"
+                  id="email"
+									placeholder="Email"
+									required
+								/>
+							</div>
+
+							<div
+								class="wrap-input "
+								data-validate="Password is required"
+							>
+								<input
+									class="input"
+									type="password"
+									name="password"
+                  id="password"
+									placeholder="Password"
+									required
+								/>
+							</div>
+
+							<div class="container-register-form-btn">
+								<button
+									type="submit"
+									class="register-form-btn"
+								>
+									Register
+								</button>
+							</div>
+              <h3 class="error">{{error}}</h3>
+
+						</form>
+					</div>
+				</div>
+			</section>
       </div>
-    <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password">
-        <label for="floatingPassword">Password</label>
-    </div>
-    <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" name="confirmation" placeholder="Password">
-        <label for="floatingPassword">Confirm Password</label>
-    </div>
-
-    <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" required value="agree"> I agree to our Terms, Data Policy and Cookie Policy.
-      </label>
-    </div>
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign Up</button>
-    <!-- <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p> -->
-    <p class="text-muted mt-3">Have an account? <a href="/login">Log in</a></p>
-  </form>
-</main>
-</div></div> 
-
-    
-  </body>
-</html>
+      </div>
+      </main>
+      </body>
+      </html>
