@@ -45,6 +45,7 @@ def index():
     return render_template("index.html")
 
 @app.route("/dashboard")
+@login_required
 def dashboard():
     return render_template("dashboard.html")
 
