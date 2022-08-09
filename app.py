@@ -1,5 +1,5 @@
 import os
-
+import psycopg2
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
@@ -24,6 +24,13 @@ Session(app)
 
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///stonks.db")
+
+#Progres DataBase URL
+if not os.environ.get('DATABASE_URL'):
+    raise RuntimeError("DATABASE_URL NOT SET")
+DATABASE_URL = os.environ['DATABASE_URL']
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+cur = conn.cursor()
 
 # Make sure API key is set
 # if not os.environ.get("API_KEY"):
@@ -107,14 +114,17 @@ def login():
 
 
         # Query database for email
-        rows = db.execute("SELECT * FROM users WHERE email = ?", request.form.get("email"))
-
+        cur.execute("SELECT * FROM users WHERE email = %s", (request.form.get("email"),))
+        rows = cur.fetchone()
         # Ensure email exists and password is correct
-        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
+        if rows is None:
             return render_template("login.html", error="Invalid Email or password")
 
+        #Check password    
+        if not check_password_hash(rows[3], (request.form.get("password"))):
+            return render_template("login.html", error="Invalid Email or password")
         # Remember which user has logged in
-        session["user_id"] = rows[0]["id"]
+        session["user_id"] = rows[0]
 
         # Redirect user to home page
         return redirect("/dashboard")
@@ -167,25 +177,34 @@ def register():
         email = request.form.get("email")
         password = request.form.get("password")
 
-        rows_uname = db.execute("SELECT * FROM users WHERE username =?;", username)
-        rows_email = db.execute("SELECT * FROM users WHERE email =?;", email)
+        cur.execute("SELECT * FROM users WHERE username =%s;", (username,))
+        rows_uname = cur.fetchone()
+        cur.execute("SELECT * FROM users WHERE email =%s;", (email,))
+        rows_email = cur.fetchone()
+        print(type(rows_uname), type(rows_email))
+        cur.execute("SELECT * FROM users;")
+        rows = cur.fetchall()
+        print(rows)
         if(not username or not password or not email):
             return render_template("register.html",error="Empty Fields")
 
-        if(len(rows_uname) == 1):
+        if(rows_uname is not None):
             return render_template("register.html",error="Username Already Taken")
 
-        if(len(rows_email) == 1):
+        if(rows_email is not None):
             return render_template("register.html",error="Email Already Used")
 
         if(not is_email(email)):
             return render_template("register.html",error="Invalid Email")
 
         hash = generate_password_hash(request.form.get("password"))
-        db.execute("INSERT INTO users (username,email,hash) VALUES (?,?,?);", username, email, hash)
+        cur.execute("INSERT INTO users (username,email,hash) VALUES (%s,%s,%s);", (username, email, hash))
 
-        row = db.execute("SELECT * FROM users WHERE username=?", username)
-        session["user_id"] = row[0]["id"]
+        cur.execute("SELECT * FROM users WHERE username=%s", (username,))
+        row = cur.fetchone()
+        print(type(row), row, row[0])
+        session["user_id"] = row[0]
+        cur.execute("COMMIT")
         return redirect("/dashboard")
 
     return render_template("register.html")

@@ -1,35 +1,113 @@
 <html>
-
-    <head>
-        <meta charset="utf-8">
-        <link rel="shortcut icon" href="/favicon.ico">
-        <link href="https://fonts.googleapis.com/css?family=Rubik:400,700,700i&amp;display=swap" rel="stylesheet">
-        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
-        <meta name="Description" content="Application for trading stocks with virtual money">
-        <meta name="theme-color" content="#5eb5f8">
-        <link rel="manifest" href="/static/manifest.json">
-        <title>StalkStock - Dashboard</title>
-        <link href="/static/landingpage.css" rel="stylesheet"/>
-        <link href="/static/landingmanu.css" rel="stylesheet"/>
-
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="/static/Images/favicon.ico" />
     <link
-			href="/static/main.css"
-			rel="stylesheet"
-		/>
-    <link
-			href="/static/login_register.css"
-			rel="stylesheet"
-		/>
-        <!-- <link href="/static/css/main.41b99ec9.chunk.css" rel="stylesheet"> -->
-    </head>
-    <body>
-        <noscript>You need to enable javascript to use this application.</noscript>
-		<main id="root">
-            <div class="container">
-                <div class="landing-page">
-                    <h1 style="margin-top:20%;margin-left:50%">Hi</h1>
-                </div>
+      href="https://fonts.googleapis.com/css?family=Rubik:400,700,700i&amp;display=swap"
+      rel="stylesheet"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,shrink-to-fit=no"
+    />
+    <meta
+      name="Description"
+      content="Application for trading stocks with virtual money"
+    />
+    <meta name="theme-color" content="#5eb5f8" />
+    <link rel="manifest" href="/static/manifest.json" />
+    <title>StalkStock - Dashboard</title>
+    <link href="/static/landingpage.css" rel="stylesheet" />
+    <link href="/static/landingmanu.css" rel="stylesheet" />
+
+    <link href="/static/main.css" rel="stylesheet" />
+    <link href="/static/login_register.css" rel="stylesheet" />
+    <link href="/static/dashboard.sass" rel="stylesheet" />
+    <!-- <link href="/static/css/main.41b99ec9.chunk.css" rel="stylesheet"> -->
+  </head>
+  <body>
+    <noscript>You need to enable javascript to use this application.</noscript>
+    <main id="root">
+      <div class="container">
+        <div class="landing-page">
+          <section class="Dashboard" id="dashboard">
+            <div></div>
+            <div style="display: flex; flex-direction: column; width: 100%">
+              <div style="display: flex; height: 100%">
+                <svg
+                  class="leftbar__logo"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                >
+                  <g>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path
+                      d="M3.897 17.86l3.91-3.91 2.829 2.828 4.571-4.57L17 14V9h-5l1.793 1.793-3.157 3.157-2.828-2.829-4.946 4.946A9.965 9.965 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10a9.987 9.987 0 0 1-8.103-4.14z"
+                    ></path>
+                  </g>
+                </svg>
+                <ul class="leftbar__menu">
+                  <a href="/dashboard"
+                    ><li>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="48"
+                        height="48"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#dddddd"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        style="stroke: rgb(94, 181, 248)"
+                      >
+                        <path
+                          d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"
+                        ></path>
+                        <path d="M9 22V12h6v10M2 10.6L12 2l10 8.6"></path>
+                      </svg></li></a
+                  ><a href="/portfolio"
+                    ><li>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="48"
+                        height="48"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#dddddd"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        style="stroke: rgb(221, 221, 221)"
+                      >
+                        <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+                        <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+                      </svg></li></a
+                  ><a href="/watchlist"
+                    ><li>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="48"
+                        height="48"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#dddddd"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        style="stroke: rgb(221, 221, 221)"
+                      >
+                        <path
+                          d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
+                        ></path>
+                      </svg></li
+                  ></a>
+                </ul>
+              </div>
             </div>
-        </main>
-    </body>
+          </section>
+        </div>
+      </div>
+    </main>
+  </body>
 </html>
