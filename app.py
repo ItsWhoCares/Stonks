@@ -1,12 +1,13 @@
 import os
 import psycopg2
+import pyEX as p
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, login_required, lookup, usd
+from helpers import apology, login_required, lookup, usd, Most_active
 from pyisemail import is_email
 # Configure application
 app = Flask(__name__)
@@ -37,6 +38,9 @@ cur = conn.cursor()
 #     raise RuntimeError("API_KEY not set")
 
 
+#Link IEX 
+c = p.Client(api_token='pk_a8218b82cc0b4e929be5cb4a3795e82c') 
+
 @app.after_request
 def after_request(response):
     """Ensure responses aren't cached"""
@@ -54,7 +58,8 @@ def index():
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    return render_template("dashboard.html")
+    most_active_9 = Most_active()
+    return render_template("dashboard.html", most_active=most_active_9)
 
 @app.route("/buy", methods=["GET", "POST"])
 @login_required

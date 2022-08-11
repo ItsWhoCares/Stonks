@@ -1,0 +1,332 @@
+.light .topbar__name {
+  color: #3a1414;
+}
+
+.light .topbar__searchbar input {
+  color: #999eaf;
+}
+
+.light .topbar__results {
+  background-color: #edebf8 !important;
+  border-color: #edebf8 !important;
+  border-top: 40px solid #edebf8 !important;
+}
+.light .topbar__results li h4 {
+  color: #3a1414;
+}
+.light .topbar__results li:hover {
+  background-color: #dddbe7 !important;
+}
+
+.light .mobileMenu {
+  background-color: #edebf8;
+}
+
+.light .hamburger__inner {
+  background-color: #3a1414 !important;
+}
+.light .hamburger__inner:after,
+.light .hamburger__inner:before {
+  background-color: #3a1414 !important;
+}
+
+.hamburger {
+  padding: 15px;
+  cursor: pointer;
+  display: none;
+  overflow: hidden;
+  background-color: transparent;
+  z-index: 100;
+}
+@media only screen and (max-width: 600px) {
+  .hamburger {
+    display: inline-block;
+  }
+}
+
+.hamburger__container {
+  width: 36px;
+  height: 24px;
+  position: relative;
+}
+
+.hamburger:hover .hamburger__inner {
+  transform: translate(-51px, 50%);
+  opacity: 0;
+}
+.hamburger:hover .hamburger__inner::before,
+.hamburger:hover .hamburger__inner::after {
+  transform: translate(102px, 0);
+  opacity: 0;
+}
+
+.hamburger.is-active .hamburger__inner {
+  display: none;
+}
+
+.hamburger__inner {
+  width: 100%;
+  height: 2px;
+  background-color: #fff;
+  border-radius: 4px;
+  position: absolute;
+  transition-property: transform, opacity;
+  transition-timing-function: ease;
+  transition-duration: 0.4s;
+  top: 50%;
+  transform: translate(5px, -50%);
+  opacity: 1;
+}
+.hamburger__inner::before,
+.hamburger__inner::after {
+  width: 100%;
+  height: 2px;
+  background-color: #fff;
+  border-radius: 4px;
+  position: absolute;
+  transition-property: transform, opacity;
+  transition-timing-function: ease;
+  transition-duration: 0.4s;
+  content: "";
+  opacity: 1;
+  transform: translate(-5px, 0);
+}
+.hamburger__inner::before {
+  top: -13px;
+}
+.hamburger__inner::after {
+  top: 13px;
+}
+
+.hamburger:hover .hamburger__hidden {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+.hamburger:hover .hamburger__hidden::before,
+.hamburger:hover .hamburger__hidden::after {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.hamburger.is-active .hamburger__hidden {
+  opacity: 1;
+  transform: rotate(45deg);
+}
+.hamburger.is-active .hamburger__hidden::before {
+  transform: translate(0, 13px) rotate(90deg);
+  transform-origin: center;
+}
+.hamburger.is-active .hamburger__hidden::after {
+  transform-origin: center;
+  transform: translate(0, -13px) rotate(0);
+}
+
+.hamburger__hidden {
+  opacity: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #fff;
+  border-radius: 4px;
+  position: absolute;
+  transition-property: transform, opacity;
+  transition-timing-function: ease;
+  transition-duration: 0.4s;
+  background-color: #222831;
+  top: 50%;
+  transform: translate(51px, -50%);
+}
+.hamburger__hidden::before,
+.hamburger__hidden::after {
+  width: 100%;
+  height: 2px;
+  background-color: #fff;
+  border-radius: 4px;
+  position: absolute;
+  transition-property: transform, opacity;
+  transition-timing-function: ease;
+  transition-duration: 0.4s;
+  background-color: #222831;
+  content: "";
+  transform: translate(102px, 0);
+}
+.hamburger__hidden::before {
+  top: -13px;
+}
+.hamburger__hidden::after {
+  top: 13px;
+}
+
+.topbar {
+  width: 100%;
+  height: 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 35px;
+}
+.topbar__name {
+  font-weight: 800;
+}
+.topbar__user {
+  bottom: 20px;
+  white-space: nowrap;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.topbar__bottom {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.topbar__dev {
+  padding: 10px;
+  background: #dddddd;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px 0px #dddddd;
+  margin-right: 20px;
+  display: flex;
+  transition: all 0.4s;
+  user-select: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+.topbar__dev h4 {
+  margin: 0;
+}
+.topbar__power {
+  padding: 10px;
+  background-color: #30475e;
+  border-radius: 10px;
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+  transition: all 0.4s;
+  user-select: none;
+}
+.topbar__power:hover {
+  box-shadow: 3px 3px #ddd;
+  cursor: pointer;
+}
+.topbar__power svg {
+  fill: white;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+.topbar__power h3 {
+  color: #fefdff;
+  margin: 0;
+}
+.topbar__container {
+  display: flex;
+  align-items: center;
+}
+
+.topbar__searchbar {
+  display: flex;
+  flex-direction: column;
+  border-radius: 50px;
+  margin-right: 80px;
+  display: flex;
+  align-items: flex-start;
+  padding: 0 20px;
+  position: relative;
+  z-index: 10;
+  height: 45px;
+  justify-content: center;
+  transition: 0.4s all;
+  width: 40%;
+  border: solid 1px #ddd;
+}
+@media only screen and (max-width: 800px) {
+  .topbar__searchbar {
+    width: 60%;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .topbar__searchbar {
+    display: none;
+  }
+}
+.topbar__searchbar .topbar__results {
+  transition: all 0.4s;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  flex-direction: column;
+  background-color: #222831;
+  z-index: -1;
+  padding: 0;
+  top: 0;
+  border: 15px solid #222831;
+  border-top: 40px solid #222831;
+  border-radius: 5px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  display: none;
+}
+.topbar__searchbar .topbar__results li {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 15px;
+  border-radius: 10px;
+  transition: all 0.4s;
+}
+.topbar__searchbar .topbar__results li a {
+  color: white;
+  width: 100%;
+}
+.topbar__searchbar .topbar__results li h4,
+.topbar__searchbar .topbar__results li h6 {
+  margin: 5px 0;
+}
+.topbar__searchbar .topbar__results li h6 {
+  color: #dddddd;
+  text-align: left;
+}
+.topbar__searchbar .topbar__results li:hover {
+  color: #222831;
+  background-color: #30475e;
+  cursor: pointer;
+}
+.topbar__searchbar svg {
+  height: 15px;
+  fill: #dddddd;
+}
+.topbar__searchbar input {
+  height: 30px;
+  background-color: transparent;
+  color: #dddddd;
+  padding: 10px;
+  font-weight: bold;
+  font-size: 16px;
+  width: 100%;
+}
+
+.mobileMenu {
+  width: 100%;
+  position: absolute;
+  background-color: #222831;
+  height: 100%;
+  z-index: 50;
+  display: none;
+  left: -100%;
+  transition: all 0.3s;
+  justify-content: center;
+  align-items: center;
+  bottom: 0;
+}
+.mobileMenu .leftbar {
+  display: flex;
+  background-color: transparent;
+  height: 100%;
+}
+.mobileMenu .leftbar svg {
+  min-width: 50px;
+}
+.mobileMenu .leftbar__logo {
+  min-width: 80px;
+}

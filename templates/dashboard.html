@@ -17,23 +17,24 @@
     <meta name="theme-color" content="#5eb5f8" />
     <link rel="manifest" href="/static/manifest.json" />
     <title>StalkStock - Dashboard</title>
-    <link href="/static/landingpage.css" rel="stylesheet" />
-    <link href="/static/landingmanu.css" rel="stylesheet" />
+    <!-- <link href="/static/landingpage.css" rel="stylesheet" /> -->
+    <!-- <link href="/static/landingmanu.css" rel="stylesheet" /> -->
 
     <link href="/static/main.css" rel="stylesheet" />
     <link href="/static/login_register.css" rel="stylesheet" />
-    <link href="/static/dashboard.sass" rel="stylesheet" />
+    <link href="/static/dashboard.css" rel="stylesheet" />
+    <link href="/static/topbar.css" rel="stylesheet" />
     <!-- <link href="/static/css/main.41b99ec9.chunk.css" rel="stylesheet"> -->
   </head>
   <body>
     <noscript>You need to enable javascript to use this application.</noscript>
     <main id="root">
       <div class="container">
-        <div class="landing-page">
-          <section class="Dashboard" id="dashboard">
-            <div></div>
-            <div style="display: flex; flex-direction: column; width: 100%">
-              <div style="display: flex; height: 100%">
+        <section class="Dashboard" id="dashboard">
+          <div></div>
+          <div style="display: flex; flex-direction: column; width: 100%">
+            <div style="display: flex; height: 100%">
+              <aside class="leftbar">
                 <svg
                   class="leftbar__logo"
                   xmlns="http://www.w3.org/2000/svg"
@@ -103,10 +104,516 @@
                       </svg></li
                   ></a>
                 </ul>
+                <h5
+                  class="panel__status"
+                  id="panel__status"
+                  style="color: rgb(94, 250, 215)"
+                >
+                  Market status: Open
+                </h5>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="leftbar__log"
+                  viewBox="0 0 24 24"
+                >
+                  <g>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path
+                      d="M4 18h2v2h12V4H6v2H4V3a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3zm2-7h7v2H6v3l-5-4 5-4v3z"
+                    ></path>
+                  </g>
+                </svg>
+              </aside>
+              <!--  -->
+              <div class="panel">
+                <nav style="display: flex; align-items: center">
+                  <div class="mobileMenu" id="mobileMenu">
+                    <aside class="leftbar">
+                      <svg
+                        class="leftbar__logo"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <g>
+                          <path fill="none" d="M0 0h24v24H0z"></path>
+                          <path
+                            d="M3.897 17.86l3.91-3.91 2.829 2.828 4.571-4.57L17 14V9h-5l1.793 1.793-3.157 3.157-2.828-2.829-4.946 4.946A9.965 9.965 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10a9.987 9.987 0 0 1-8.103-4.14z"
+                          ></path>
+                        </g>
+                      </svg>
+                      <ul class="leftbar__menu">
+                        <a href="/dashboard"
+                          ><li>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="48"
+                              height="48"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="#dddddd"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              style="stroke: rgb(94, 181, 248)"
+                            >
+                              <path
+                                d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"
+                              ></path>
+                              <path d="M9 22V12h6v10M2 10.6L12 2l10 8.6"></path>
+                            </svg></li></a
+                        ><a href="/portfolio"
+                          ><li>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="48"
+                              height="48"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="#dddddd"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              style="stroke: rgb(221, 221, 221)"
+                            >
+                              <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+                              <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+                            </svg></li></a
+                        ><a href="/watchlist"
+                          ><li>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="48"
+                              height="48"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="#dddddd"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              style="stroke: rgb(221, 221, 221)"
+                            >
+                              <path
+                                d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
+                              ></path>
+                            </svg></li
+                        ></a>
+                      </ul>
+                      <h5
+                        class="panel__status"
+                        id="panel__status"
+                        style="color: rgb(94, 250, 215)"
+                      >
+                        Market status: Open
+                      </h5>
+                      <a href="/logout">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="leftbar__log"
+                        viewBox="0 0 24 24"
+                      >
+                        <g>
+                          <path fill="none" d="M0 0h24v24H0z"></path>
+                          <path
+                            d="M4 18h2v2h12V4H6v2H4V3a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3zm2-7h7v2H6v3l-5-4 5-4v3z"
+                          ></path>
+                        </g>
+                      </svg></a>
+                    </aside>
+                  </div>
+                  <div class="topbar">
+                    <div class="hamburger">
+                      <div class="hamburger__container">
+                        <div class="hamburger__inner"></div>
+                        <div class="hamburger__hidden"></div>
+                      </div>
+                    </div>
+                    <div class="topbar__searchbar" id="topbar__searchbar">
+                      <div
+                        style="display: flex; align-items: center; width: 100%"
+                      >
+                        <svg
+                          enable-background="new 0 0 250.313 250.313"
+                          version="1.1"
+                          viewBox="0 0 250.313 250.313"
+                          xml:space="preserve"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="m244.19 214.6l-54.379-54.378c-0.289-0.289-0.628-0.491-0.93-0.76 10.7-16.231 16.945-35.66 16.945-56.554 0-56.837-46.075-102.91-102.91-102.91s-102.91 46.075-102.91 102.91c0 56.835 46.074 102.91 102.91 102.91 20.895 0 40.323-6.245 56.554-16.945 0.269 0.301 0.47 0.64 0.759 0.929l54.38 54.38c8.169 8.168 21.413 8.168 29.583 0 8.168-8.169 8.168-21.413 0-29.582zm-141.28-44.458c-37.134 0-67.236-30.102-67.236-67.235 0-37.134 30.103-67.236 67.236-67.236 37.132 0 67.235 30.103 67.235 67.236s-30.103 67.235-67.235 67.235z"
+                            clip-rule="evenodd"
+                            fill-rule="evenodd"
+                          ></path></svg
+                        ><input
+                          autocorrect="off"
+                          autocapitalize="off"
+                          spellcheck="false"
+                          type="text"
+                          id="searchBar"
+                          placeholder="Search by symbol"
+                          autocomplete="off"
+                        />
+                      </div>
+                      <ul class="topbar__results" id="results"></ul>
+                    </div>
+                    <div class="topbar__container">
+                      <div class="topbar__user">
+                        <a href="/portfolio"
+                          ><div class="topbar__power">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                            >
+                              <g>
+                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                <path
+                                  d="M18 7h3a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h15v4zM4 9v10h16V9H4zm0-4v2h12V5H4zm11 8h3v2h-3v-2z"
+                                ></path>
+                              </g>
+                            </svg>
+                            <h3>$100,000</h3>
+                          </div></a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </nav>
+                <div class="panel__container">
+                  <div class="panel__top">
+                    <div class="panel__title">
+                      <div
+                        style="display: flex; align-items: center; width: 33%"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="panel__portfolio-title"
+                          viewBox="0 0 24 24"
+                        >
+                          <g>
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path
+                              d="M4.873 3h14.254a1 1 0 0 1 .809.412l3.823 5.256a.5.5 0 0 1-.037.633L12.367 21.602a.5.5 0 0 1-.706.028c-.007-.006-3.8-4.115-11.383-12.329a.5.5 0 0 1-.037-.633l3.823-5.256A1 1 0 0 1 4.873 3zm.51 2l-2.8 3.85L12 19.05 21.417 8.85 18.617 5H5.383z"
+                            ></path>
+                          </g>
+                        </svg>
+                        <h3>Portfolio</h3>
+                      </div>
+                    </div>
+                    <div class="panel__topCharts" style="display: flex">
+                      <div class="panel__portfolio-section">
+                        <div class="panel__portfolio" id="portfolio">
+                          <div class="errorMsg">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                            >
+                              <g>
+                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                <path
+                                  d="M5.373 4.51A9.962 9.962 0 0 1 12 2c5.523 0 10 4.477 10 10a9.954 9.954 0 0 1-1.793 5.715L17.5 12H20A8 8 0 0 0 6.274 6.413l-.9-1.902zm13.254 14.98A9.962 9.962 0 0 1 12 22C6.477 22 2 17.523 2 12c0-2.125.663-4.095 1.793-5.715L6.5 12H4a8 8 0 0 0 13.726 5.587l.9 1.902zm-5.213-4.662L10.586 12l-2.829 2.828-1.414-1.414 4.243-4.242L13.414 12l2.829-2.828 1.414 1.414-4.243 4.242z"
+                                ></path>
+                              </g>
+                            </svg>
+                            <p>You didn't buy any stocks yet.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel__low">
+                  <div class="panel__bottom-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                      <g>
+                        <path fill="none" d="M0 0h24v24H0z"></path>
+                        <path
+                          fill-rule="nonzero"
+                          d="M12 23a7.5 7.5 0 0 0 7.5-7.5c0-.866-.23-1.697-.5-2.47-1.667 1.647-2.933 2.47-3.8 2.47 3.995-7 1.8-10-4.2-14 .5 5-2.796 7.274-4.138 8.537A7.5 7.5 0 0 0 12 23zm.71-17.765c3.241 2.75 3.257 4.887.753 9.274-.761 1.333.202 2.991 1.737 2.991.688 0 1.384-.2 2.119-.595a5.5 5.5 0 1 1-9.087-5.412c.126-.118.765-.685.793-.71.424-.38.773-.717 1.118-1.086 1.23-1.318 2.114-2.78 2.566-4.462z"
+                        ></path>
+                      </g>
+                    </svg>
+                    <h3>Most Active</h3>
+                  </div>
+                  <div class="panel__bottom">
+                    <div class="panel__stockList">
+                      <ul class="panel__list">
+                        <li>
+                          <a href="/stocks?q={{most_active[0]["symbol"]}}"
+                            ><span class="panel__fullname"
+                              ><h4>{{most_active[0]["symbol"]}}</h4>
+                              <h6 class="panel__name">
+                                {{most_active[0]["companyName"]}}
+                              </h6></span
+                            >
+                            <div class="panel__list-change">
+                              <h4>${{most_active[0]["latestPrice"]}}</h4>
+                              
+                                {% if most_active[0]["changePercent"] > 0 %}
+                                <h5
+                                style="
+                                  color: rgb(102, 249, 218);
+                                  margin: 5px 0px 0px;
+                                  text-shadow: rgba(102, 249, 218, 0.5) 0px 0px
+                                    7px;
+                                "
+                              >
+                                +{{most_active[0]["changePercent"]}}% </h5>{% else %}
+
+                                <h5 style="color: rgb(244, 84, 133); margin: 5px 0px 0px; text-shadow: rgba(244, 84, 133, 0.5) 0px 0px 7px;">
+                                {{most_active[0]["changePercent"]}}% </h5>{% endif
+                                %}
+                              
+                            </div></a
+                          >
+                        </li>
+                        <li>
+                          <a href="/stocks?q={{most_active[1]["symbol"]}}"
+                            ><span class="panel__fullname"
+                              ><h4>{{most_active[1]["symbol"]}}</h4>
+                              <h6 class="panel__name">
+                                {{most_active[1]["companyName"]}}
+                              </h6></span
+                            >
+                            <div class="panel__list-change">
+                              <h4>${{most_active[1]["latestPrice"]}}</h4>
+                                {% if most_active[1]["changePercent"] > 0 %}
+                                <h5
+                                style="
+                                  color: rgb(102, 249, 218);
+                                  margin: 5px 0px 0px;
+                                  text-shadow: rgba(102, 249, 218, 0.5) 0px 0px
+                                    7px;
+                                "
+                              >
+                                +{{most_active[1]["changePercent"]}}% </h5>{% else %}
+                                <h5 style="color: rgb(244, 84, 133); margin: 5px 0px 0px; text-shadow: rgba(244, 84, 133, 0.5) 0px 0px 7px;">
+
+                                {{most_active[1]["changePercent"]}}% </h5>{% endif
+                                %}
+                              
+                            </div></a
+                          >
+                        </li>
+                        <li>
+                          <a href="/stocks?q={{most_active[2]["symbol"]}}"
+                            ><span class="panel__fullname"
+                              ><h4>{{most_active[2]["symbol"]}}</h4>
+                              <h6 class="panel__name">
+                                {{most_active[2]["companyName"]}}
+                              </h6></span
+                            >
+                            <div class="panel__list-change">
+                              <h4>${{most_active[2]["latestPrice"]}}</h4>
+                              
+                                {% if most_active[2]["changePercent"] > 0 %}
+                                <h5
+                                style="
+                                  color: rgb(102, 249, 218);
+                                  margin: 5px 0px 0px;
+                                  text-shadow: rgba(102, 249, 218, 0.5) 0px 0px
+                                    7px;
+                                "
+                              >
+                                +{{most_active[2]["changePercent"]}}% </h5>{% else %}
+                                <h5 style="color: rgb(244, 84, 133); margin: 5px 0px 0px; text-shadow: rgba(244, 84, 133, 0.5) 0px 0px 7px;">
+
+                                {{most_active[2]["changePercent"]}}% </h5>
+                                {% endif %}
+                              
+                            </div></a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="panel__stockList">
+                      <ul class="panel__list">
+                        <li>
+                          <a href="/stocks?q={{most_active[3]["symbol"]}}"
+                            ><span class="panel__fullname"
+                              ><h4>{{most_active[3]["symbol"]}}</h4>
+                              <h6 class="panel__name">
+                                {{most_active[3]["companyName"]}}
+                              </h6></span
+                            >
+                            <div class="panel__list-change">
+                              <h4>${{most_active[3]["latestPrice"]}}</h4>
+                              
+                                {% if most_active[3]["changePercent"] > 0 %}
+                                <h5
+                                style="
+                                  color: rgb(102, 249, 218);
+                                  margin: 5px 0px 0px;
+                                  text-shadow: rgba(102, 249, 218, 0.5) 0px 0px
+                                    7px;
+                                "
+                              >
+                                +{{most_active[3]["changePercent"]}}% </h5>{% else %}
+                                <h5 style="color: rgb(244, 84, 133); margin: 5px 0px 0px; text-shadow: rgba(244, 84, 133, 0.5) 0px 0px 7px;">
+
+                                {{most_active[3]["changePercent"]}}% </h5>{% endif
+                                %}
+                              
+                            </div></a
+                          >
+                        </li>
+                        
+                        <li>
+                          <a href="/stocks?q={{most_active[4]["symbol"]}}"
+                            ><span class="panel__fullname"
+                              ><h4>{{most_active[4]["symbol"]}}</h4>
+                              <h6 class="panel__name">
+                                {{most_active[4]["companyName"]}}
+                              </h6></span
+                            >
+                            <div class="panel__list-change">
+                              <h4>${{most_active[4]["latestPrice"]}}</h4>
+                              
+                                {% if most_active[4]["changePercent"] > 0 %}
+                                <h5
+                                style="
+                                  color: rgb(102, 249, 218);
+                                  margin: 5px 0px 0px;
+                                  text-shadow: rgba(102, 249, 218, 0.5) 0px 0px
+                                    7px;
+                                "
+                              >
+                                +{{most_active[4]["changePercent"]}}% </h5>{% else %}
+                                <h5 style="color: rgb(244, 84, 133); margin: 5px 0px 0px; text-shadow: rgba(244, 84, 133, 0.5) 0px 0px 7px;">
+
+                                {{most_active[4]["changePercent"]}}% </h5>{% endif
+                                %}
+                              
+                            </div></a
+                          >
+                        </li>
+                        <li>
+                          <a href="/stocks?q={{most_active[5]["symbol"]}}"
+                            ><span class="panel__fullname"
+                              ><h4>{{most_active[5]["symbol"]}}</h4>
+                              <h6 class="panel__name">
+                                {{most_active[5]["companyName"]}}
+                              </h6></span
+                            >
+                            <div class="panel__list-change">
+                              <h4>${{most_active[5]["latestPrice"]}}</h4>
+                              
+                                {% if most_active[5]["changePercent"] > 0 %}
+                                <h5
+                                style="
+                                  color: rgb(102, 249, 218);
+                                  margin: 5px 0px 0px;
+                                  text-shadow: rgba(102, 249, 218, 0.5) 0px 0px
+                                    7px;
+                                "
+                              >
+                                +{{most_active[5]["changePercent"]}}% </h5>{% else %}
+                                <h5 style="color: rgb(244, 84, 133); margin: 5px 0px 0px; text-shadow: rgba(244, 84, 133, 0.5) 0px 0px 7px;">
+
+                                {{most_active[5]["changePercent"]}}% </h5>{% endif
+                                %}
+                              
+                            </div></a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="panel__stockList">
+                      <ul class="panel__list">
+                        <li>
+                          <a href="/stocks?q={{most_active[6]["symbol"]}}"
+                            ><span class="panel__fullname"
+                              ><h4>{{most_active[6]["symbol"]}}</h4>
+                              <h6 class="panel__name">
+                                {{most_active[6]["companyName"]}}
+                              </h6></span
+                            >
+                            <div class="panel__list-change">
+                              <h4>${{most_active[6]["latestPrice"]}}</h4>
+                              
+                                {% if most_active[6]["changePercent"] > 0 %}
+                                <h5
+                                style="
+                                  color: rgb(102, 249, 218);
+                                  margin: 5px 0px 0px;
+                                  text-shadow: rgba(102, 249, 218, 0.5) 0px 0px
+                                    7px;
+                                "
+                              >
+                                +{{most_active[6]["changePercent"]}}% </h5>{% else %}
+                                <h5 style="color: rgb(244, 84, 133); margin: 5px 0px 0px; text-shadow: rgba(244, 84, 133, 0.5) 0px 0px 7px;">
+
+                                {{most_active[6]["changePercent"]}}% </h5>{% endif
+                                %}
+                              
+                            </div></a
+                          >
+                        </li>
+                        <li>
+                          <a href="/stocks?q={{most_active[7]["symbol"]}}"
+                            ><span class="panel__fullname"
+                              ><h4>{{most_active[7]["symbol"]}}</h4>
+                              <h6 class="panel__name">
+                                {{most_active[7]["companyName"]}}
+                              </h6></span
+                            >
+                            <div class="panel__list-change">
+                              <h4>${{most_active[7]["latestPrice"]}}</h4>
+                             
+                                {% if most_active[7]["changePercent"] > 0 %}
+                                <h5
+                                style="
+                                  color: rgb(102, 249, 218);
+                                  margin: 5px 0px 0px;
+                                  text-shadow: rgba(102, 249, 218, 0.5) 0px 0px
+                                    7px;
+                                "
+                              >
+                                +{{most_active[7]["changePercent"]}}% </h5>{% else %}
+                                <h5 style="color: rgb(244, 84, 133); margin: 5px 0px 0px; text-shadow: rgba(244, 84, 133, 0.5) 0px 0px 7px;">
+
+                                {{most_active[7]["changePercent"]}}% </h5>{% endif
+                                %}
+                              
+                            </div></a
+                          >
+                        </li>
+                        <li>
+                          <a href="/stocks?q={{most_active[8]["symbol"]}}"
+                            ><span class="panel__fullname"
+                              ><h4>{{most_active[8]["symbol"]}}</h4>
+                              <h6 class="panel__name">
+                                {{most_active[8]["companyName"]}}
+                              </h6></span
+                            >
+                            <div class="panel__list-change">
+                              <h4>${{most_active[8]["latestPrice"]}}</h4>
+                             
+                                {% if most_active[8]["changePercent"] > 0 %}
+                                <h5
+                                style="
+                                  color: rgb(102, 249, 218);
+                                  margin: 5px 0px 0px;
+                                  text-shadow: rgba(102, 249, 218, 0.5) 0px 0px
+                                    7px;
+                                "
+                              >
+                                +{{most_active[8]["changePercent"]}}% </h5>{% else %}
+                                <h5 style="color: rgb(244, 84, 133); margin: 5px 0px 0px; text-shadow: rgba(244, 84, 133, 0.5) 0px 0px 7px;">
+
+                                {{most_active[8]["changePercent"]}}% </h5>{% endif
+                                %}
+                              
+                            </div></a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
+              <!--  -->
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
       </div>
     </main>
   </body>
