@@ -1,13 +1,14 @@
 import os
 import psycopg2
 import pyEX as p
+import requests
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, login_required, lookup, usd, Most_active
+from helpers import apology, login_required, lookup, usd, Most_active, is_market_open, get_stock_info, news
 from pyisemail import is_email
 # Configure application
 app = Flask(__name__)
@@ -41,6 +42,7 @@ cur = conn.cursor()
 #Link IEX 
 c = p.Client(api_token='pk_a8218b82cc0b4e929be5cb4a3795e82c') 
 
+
 @app.after_request
 def after_request(response):
     """Ensure responses aren't cached"""
@@ -59,7 +61,19 @@ def index():
 @login_required
 def dashboard():
     most_active_9 = Most_active()
-    return render_template("dashboard.html", most_active=most_active_9)
+    status = is_market_open()
+    return render_template("dashboard.html", status=status, most_active=most_active_9)
+
+
+@app.route("/stocks", methods=["GET"])
+@login_required
+def stocks():
+    stock_symbol = request.args.get("q")
+    status = is_market_open()
+    key_info = get_stock_info(stock_symbol)
+    articles = news(stock_symbol)
+    return render_template("stocks.html", status=status, key_info=key_info, articles=articles)
+
 
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
@@ -224,3 +238,34 @@ def register():
 def sell():
     """Sell shares of stock"""
     return apology("TODO")
+
+
+@app.route("/OneDayChart", methods=["GET"])
+@login_required
+def OneDayChart():
+    symbol = request.args.get("symbol")
+    api_key = 'SAOS0Y8B63XM4DPK'
+    url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=1min&apikey={api_key}"
+    response = requests.get(url)
+
+    stock_data = response.json()
+    labels = []
+    data = []
+    chart = {
+        "labels":[],
+        "data":[]
+    }
+    for label in stock_data["Time Series (1min)"]:
+        labels.append(label.split(" ")[1][:5])
+    
+    for label in stock_data["Time Series (1min)"]:
+        data.append(round(float(stock_data["Time Series (1min)"][label]["4. close"]),2))
+
+    for label in labels:
+        chart["labels"].append(label)
+
+    for dat in data:
+        chart["data"].append(dat)
+    chart["labels"].reverse()
+    chart["data"].reverse()
+    return chart

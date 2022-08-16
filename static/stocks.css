@@ -1,0 +1,546 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+@keyframes show-popup {
+  0% {
+    -webkit-transform: translate(-50%, -50%) scale(0.7);
+    transform: translate(-50%, -50%) scale(0.7);
+    opacity: 0;
+  }
+  45% {
+    -webkit-transform: translate(-50%, -50%) scale(1.05);
+    transform: translate(-50%, -50%) scale(1.05);
+    opacity: 1;
+  }
+  80% {
+    -webkit-transform: translate(-50%, -50%) scale(0.95);
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  100% {
+    -webkit-transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.light .stockPage {
+  background-color: #edebf8;
+}
+.light .stockPage__keyStats h3 {
+  color: #3a1414;
+}
+.light .stockPage__timers h6 {
+  background-color: #dddbe7 !important;
+  color: #3a1414;
+}
+.light .stockPage__timers h6:hover {
+  background-color: #999eaf !important;
+}
+.light .stockPage .active {
+  background-color: #999eaf !important;
+}
+.light .stockPage__trade-top h2,
+.light .stockPage__trade h5 {
+  color: #3a1414;
+}
+.light .stockPage__buy-input {
+  background-color: #dddbe7 !important;
+  border: 1px #dddbe7 solid !important;
+  color: #3a1414 !important;
+}
+
+.light .article {
+  background-color: #dddbe7 !important;
+}
+.light .article:hover {
+  box-shadow: 3px 3px #ddd;
+}
+.light .article__content {
+  color: #3a1414;
+}
+.light .article__top h6 {
+  color: #999eaf;
+}
+
+.light .Key-info__info h4 {
+  color: #3a1414 !important;
+}
+
+.light .Key-info__info h3 {
+  color: #222831 !important;
+}
+
+.light .buyConfirmation {
+  background-color: white !important;
+}
+.light .buyConfirmation h3 {
+  color: #3a1414 !important;
+}
+
+.stock {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.stockPage {
+  width: 97%;
+  padding: 3%;
+  padding-top: 2%;
+  display: flex;
+  flex-direction: column;
+}
+@media only screen and (max-width: 600px) {
+  .stockPage {
+    width: 100%;
+  }
+}
+.stockPage .loader {
+  margin: 100px auto;
+}
+
+.stockPage__top {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  height: 45%;
+}
+
+@media only screen and (max-width: 900px) {
+  .stockPage__top {
+    height: 60%;
+  }
+}
+
+.Chart {
+  width: 80%;
+  height: 90%;
+  padding: 10px;
+  position: relative;
+}
+@media only screen and (max-width: 900px) {
+  .Chart {
+    width: 100%;
+    height: 80%;
+  }
+}
+@media only screen and (max-width: 900px) {
+  .Chart {
+    width: 100%;
+    height: 70%;
+  }
+}
+.Chart__info {
+  width: 100%;
+}
+.Chart__timers {
+  position: absolute;
+  top: -20px;
+  right: 20px;
+  color: white;
+  transition: all 0.5s;
+  cursor: pointer;
+  display: flex;
+}
+.Chart__timers h6 {
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: #222831;
+  margin: 0 3px;
+  transition: all 0.5s;
+}
+.Chart__timers h6:hover {
+  background-color: #30475e;
+}
+.Chart__timers .active {
+  background-color: #30475e;
+}
+
+.stockPage__trade {
+  width: 20%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 8px;
+  flex-direction: column;
+  position: relative;
+}
+@media only screen and (max-width: 900px) {
+  .stockPage__trade .stockPage__buy-container {
+    position: absolute;
+    right: 10px;
+    bottom: 20px;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .stockPage__trade .stockPage__buy-container {
+    width: 50%;
+  }
+  .stockPage__trade .stockPage__buy-container input,
+  .stockPage__trade .stockPage__buy-container button {
+    font-size: 9px;
+  }
+}
+@media only screen and (max-width: 900px) {
+  .stockPage__trade {
+    flex-direction: row;
+    height: auto;
+    width: 100%;
+  }
+}
+.stockPage__trade h5 {
+  color: white;
+  font-weight: 400;
+}
+@media only screen and (max-width: 900px) {
+  .stockPage__trade h5 {
+    display: none;
+  }
+}
+.stockPage__trade h2 {
+  font-weight: 400;
+}
+.stockPage__trade h4 {
+  color: #dddddd;
+  margin: 0;
+}
+.stockPage__trade h6 {
+  margin-top: -20px;
+  margin: 0;
+  color: #dddddd;
+}
+@media only screen and (max-width: 900px) {
+  .stockPage__trade h6 {
+    margin-left: 20px;
+  }
+}
+.stockPage__trade .stockPage__trade-top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+@media only screen and (max-width: 900px) {
+  .stockPage__trade .stockPage__trade-top {
+    width: auto;
+  }
+}
+.stockPage__trade .stockPage__trade-top h2 {
+  margin: 0;
+  margin-bottom: 10px;
+}
+.stockPage__trade .stockPage__trade-top h6 {
+  margin-left: 10px;
+  white-space: nowrap;
+}
+.stockPage__trade .stockPage__buy-input {
+  background-color: #30475e;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 5px;
+  border: 1px solid #222831;
+  margin-right: 7px;
+  width: 70%;
+  transition: all 0.5s;
+  letter-spacing: 1px;
+}
+.stockPage__trade .stockPage__buy-input:hover,
+.stockPage__trade .stockPage__buy-input:focus {
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
+}
+
+.stockPage__buy-button {
+  padding: 10px;
+  background-color: #30475e;
+  color: white;
+  font-weight: bold;
+  transition: all 0.5s;
+  border-radius: 5px;
+}
+.stockPage__buy-button:hover {
+  box-shadow: 3px 3px #ddd;
+}
+.stockPage__buy-button:nth-child(1) {
+  margin-right: 20px;
+}
+
+.stockPage__sell-button {
+  padding: 10px;
+  background-color: #ddd;
+  color: #30475e;
+  font-weight: bold;
+  transition: all 0.5s;
+  border-radius: 5px;
+}
+.stockPage__sell-button:hover {
+  box-shadow: 3px 3px #ddd;
+}
+.stockPage__sell-button:nth-child(1) {
+  margin-right: 20px;
+}
+
+.cancel {
+  background: #30475e;
+}
+.cancel:hover {
+  box-shadow: 3px 3px #ddd;
+}
+
+.stockPage__keyStats {
+  width: 100%;
+  height: 55%;
+  display: flex;
+}
+@media only screen and (max-width: 900px) {
+  .stockPage__keyStats {
+    height: 40%;
+  }
+}
+.stockPage__keyStats .stockPage__headings {
+  display: flex;
+  justify-content: space-between;
+}
+.stockPage__keyStats .stockPage__headings h3:nth-child(2) {
+  margin-right: 200px;
+}
+.stockPage__keyStats .Key-info {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+@media only screen and (max-width: 750px) {
+  .stockPage__keyStats .Key-info {
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 900px) {
+  .stockPage__keyStats .Key-info h3 {
+    margin-bottom: 0;
+  }
+}
+.stockPage__keyStats .Key-info .Key-info__columns {
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+}
+.stockPage__keyStats .Key-info .Key-info__label {
+  font-weight: 400;
+}
+.stockPage__keyStats .Key-info .Key-info__info {
+  width: 33%;
+}
+@media only screen and (max-width: 600px) {
+  .stockPage__keyStats .Key-info .Key-info__info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+}
+.stockPage__keyStats .Key-info .Key-info__info h3 {
+  color: white;
+}
+.stockPage__keyStats .Key-info h4 {
+  margin: 25px 0;
+  color: #dddddd;
+}
+@media only screen and (max-width: 900px) {
+  .stockPage__keyStats .Key-info h4 {
+    margin: 10px 0;
+  }
+}
+@media only screen and (max-height: 550px) {
+  .stockPage__keyStats .Key-info h4 {
+    margin: 10px 0;
+  }
+}
+.stockPage__keyStats h3 {
+  color: #dddddd;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+@media only screen and (max-width: 600px) {
+  .stockPage__keyStats h3 {
+    width: auto;
+  }
+}
+.stockPage__keyStats h3 svg {
+  width: 30px;
+  margin-right: 10px;
+  fill: #222831;
+}
+.stockPage__keyStats .news {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.stockPage__keyStats .news__articles {
+  margin-top: -15px;
+  position: relative;
+}
+@media only screen and (max-width: 900px) {
+  .stockPage__keyStats .news__articles a:last-child {
+    display: none;
+  }
+}
+@media only screen and (max-height: 650px) {
+  .stockPage__keyStats .news__articles a:last-child {
+    display: none;
+  }
+}
+@media only screen and (max-width: 750px) {
+  .stockPage__keyStats .news {
+    display: none;
+  }
+}
+@media only screen and (max-height: 480px) {
+  .stockPage__keyStats .news a:nth-child(2) {
+    display: none;
+  }
+}
+.stockPage__keyStats .news__nothing {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  flex-direction: column;
+  width: 100%;
+}
+.stockPage__keyStats .news__nothing h3 {
+  width: auto;
+}
+.stockPage__keyStats .news__nothing svg {
+  width: 30%;
+  height: 30%;
+  fill: #222831;
+}
+.stockPage__keyStats .news .article {
+  width: 100%;
+  background-color: #30475e;
+  padding: 5px 15px;
+  display: flex;
+  margin: 15px 0;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  min-height: 80px;
+  height: auto;
+  border-radius: 10px;
+}
+.stockPage__keyStats .news .article h4 {
+  margin: 0;
+  max-width: 90%;
+}
+.stockPage__keyStats .news .article h6 {
+  margin: 0 10px;
+  white-space: nowrap;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: #dddddd;
+}
+.stockPage__keyStats .news .article h5 {
+  font-weight: 400;
+  margin: 5px 0;
+  text-overflow: ellipsis; /*edit */
+}
+.stockPage__keyStats .news .article__image {
+  min-width: 80px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  margin-right: 20px;
+  max-width: 80px;
+}
+@media only screen and (max-width: 900px) {
+  .stockPage__keyStats .news .article__image {
+    min-width: 40px;
+    margin-right: 10px;
+  }
+}
+.stockPage__keyStats .news .article__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.stockPage__keyStats .news .article:hover {
+  box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.15);
+}
+
+.wrongSymbol {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+}
+.wrongSymbol h1 {
+  color: #dddddd;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  margin-bottom: 100px;
+}
+.wrongSymbol .topbar__searchbar {
+  width: 33%;
+  margin: 0;
+}
+.wrongSymbol a {
+  color: #222831;
+}
+.wrongSymbol h3 {
+  margin: 0;
+}
+
+.buyConfirmation {
+  width: 50%;
+  height: 30%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 10px;
+  background-color: #222831;
+  animation: show-popup 0.3s;
+  text-align: center;
+}
+.buyConfirmation h3 {
+  font-weight: 400;
+}
+
+.black-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 100;
+}
+
+@media (max-width: 1380px) {
+  .stock {
+    flex-direction: column;
+  }
+}
+
+.allStocks {
+  width: 100%;
+  display: flex;
+}

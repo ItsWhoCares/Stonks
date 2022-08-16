@@ -2,12 +2,14 @@ import os
 import requests
 import urllib.parse
 import pyEX as p
+import datetime
 
+from numerize import numerize
 from flask import redirect, render_template, request, session
 from functools import wraps
 
 
-c = p.Client(api_token='pk_a8218b82cc0b4e929be5cb4a3795e82c') 
+c = p.Client(api_token='sk_bdf4a921914e4977b60e9b40fc9f1b3e') 
 
 def apology(message, code=400):
     """Render message as an apology to user."""
@@ -122,7 +124,56 @@ def Most_active():
 
 
 
+def is_market_open():
+    status = c.quote('aapl')
+    return status["isUSMarketOpen"]
+
+
+def get_stock_info(symbol):
+    stock_info = c.quote(symbol)
+    if stock_info["latestVolume"] is None:
+        stock_info["latestVolume"] = "---"
+    else:
+        stock_info["latestVolume"] = "{:,}".format(stock_info["latestVolume"])
+    return {
+        "Symbol": symbol,
+        "CompanyName": stock_info["companyName"],
+        "Market Cap": numerize.numerize(stock_info["marketCap"]),
+        "PE Ratio (TTM)": stock_info["peRatio"],
+        "52 week High": stock_info["week52High"],
+        "52 week Low": stock_info["week52Low"],
+        "YTD Change": round(stock_info["ytdChange"] * 100, 2),
+        "Volume": stock_info["latestVolume"]
+    }
 
 def usd(value):
     """Format value as USD."""
     return f"${value:,.2f}"
+
+
+def news(symbol):
+    articles = c.news(symbol)[:3]
+    return [
+        {
+            "Date": datetime.datetime.fromtimestamp(articles[0]["datetime"]/1000).strftime("%B %d"),
+            "ImageUrl": articles[0]["image"],
+            "Headline": articles[0]["headline"],
+            "Summary": articles[0]["summary"][0:120],
+            "Url": articles[0]["url"]
+        },
+        {
+            "Date": datetime.datetime.fromtimestamp(articles[1]["datetime"]/1000).strftime("%B %d"),
+            "ImageUrl": articles[1]["image"],
+            "Headline": articles[1]["headline"],
+            "Summary": articles[1]["summary"][0:120],
+            "Url": articles[1]["url"]
+        },
+        {
+            "Date": datetime.datetime.fromtimestamp(articles[2]["datetime"]/1000).strftime("%B %d"),
+            "ImageUrl": articles[2]["image"],
+            "Headline": articles[2]["headline"],
+            "Summary": articles[2]["summary"][0:120],
+            "Url": articles[2]["url"]
+        }
+    ]
+
