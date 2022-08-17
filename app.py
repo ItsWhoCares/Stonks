@@ -65,14 +65,19 @@ def dashboard():
     return render_template("dashboard.html", status=status, most_active=most_active_9)
 
 
-@app.route("/stocks", methods=["GET"])
+@app.route("/stocks/<stock_symbol>", methods=["GET","POST"])
 @login_required
-def stocks():
-    stock_symbol = request.args.get("q")
+def stocks(stock_symbol):
+    # stock_symbol = request.args.get("q")
     status = is_market_open()
     key_info = get_stock_info(stock_symbol)
     articles = news(stock_symbol)
     return render_template("stocks.html", status=status, key_info=key_info, articles=articles)
+
+@app.route("/latest_price/<stock_symbol>", methods=["GET","POST"])
+def latest_price(stock_symbol):
+    price = get_stock_info(stock_symbol)
+    return str(price["LatestPrice"])
 
 
 @app.route("/buy", methods=["GET", "POST"])

@@ -143,7 +143,10 @@ def get_stock_info(symbol):
         "52 week High": stock_info["week52High"],
         "52 week Low": stock_info["week52Low"],
         "YTD Change": round(stock_info["ytdChange"] * 100, 2),
-        "Volume": stock_info["latestVolume"]
+        "Volume": stock_info["latestVolume"],
+        "LatestPrice": round(stock_info["latestPrice"], 2),
+        "Change": stock_info["change"],
+        "ChangePercent": round(stock_info["changePercent"] * 100, 2)
     }
 
 def usd(value):

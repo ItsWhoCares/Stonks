@@ -231,7 +231,7 @@
                         <div class="hamburger__hidden"></div>
                       </div>
                     </div>
-                    <div class="topbar__searchbar" id="topbar__searchbar">
+                    <div class="topbar__searchbar" id="topbar__searchbar" style="box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px 30px;">
                       <div
                         style="display: flex; align-items: center; width: 100%"
                       >
@@ -255,9 +255,15 @@
                           id="searchBar"
                           placeholder="Search by symbol"
                           autocomplete="off"
+                          onfocus="box_focus()"
+                          onblur="box_blur()"
                         />
                       </div>
-                      <ul class="topbar__results" id="results"></ul>
+                      <!-- <ul class="topbar__results" id="results"></ul> -->
+                      <ul class="topbar__results" id="results" style="box-shadow: rgba(0, 0, 0, 0.1) 0px 30px 20px 0px; display: none;">
+
+                      </ul>
+                      <script src="/static/js/Search.js"></script>
                     </div>
                     <div class="topbar__container">
                       <div class="topbar__user">
@@ -341,7 +347,7 @@
                     <div class="panel__stockList">
                       <ul class="panel__list">
                         <li>
-                          <a href="/stocks?q={{most_active[0]["symbol"]}}"
+                          <a href="/stocks/{{most_active[0]["symbol"]}}"
                             ><span class="panel__fullname"
                               ><h4>{{most_active[0]["symbol"]}}</h4>
                               <h6 class="panel__name">
@@ -370,7 +376,7 @@
                           >
                         </li>
                         <li>
-                          <a href="/stocks?q={{most_active[1]["symbol"]}}"
+                          <a href="/stocks/{{most_active[1]["symbol"]}}"
                             ><span class="panel__fullname"
                               ><h4>{{most_active[1]["symbol"]}}</h4>
                               <h6 class="panel__name">
@@ -398,7 +404,7 @@
                           >
                         </li>
                         <li>
-                          <a href="/stocks?q={{most_active[2]["symbol"]}}"
+                          <a href="/stocks/{{most_active[2]["symbol"]}}"
                             ><span class="panel__fullname"
                               ><h4>{{most_active[2]["symbol"]}}</h4>
                               <h6 class="panel__name">
@@ -431,7 +437,7 @@
                     <div class="panel__stockList">
                       <ul class="panel__list">
                         <li>
-                          <a href="/stocks?q={{most_active[3]["symbol"]}}"
+                          <a href="/stocks/{{most_active[3]["symbol"]}}"
                             ><span class="panel__fullname"
                               ><h4>{{most_active[3]["symbol"]}}</h4>
                               <h6 class="panel__name">
@@ -461,7 +467,7 @@
                         </li>
                         
                         <li>
-                          <a href="/stocks?q={{most_active[4]["symbol"]}}"
+                          <a href="/stocks/{{most_active[4]["symbol"]}}"
                             ><span class="panel__fullname"
                               ><h4>{{most_active[4]["symbol"]}}</h4>
                               <h6 class="panel__name">
@@ -490,7 +496,7 @@
                           >
                         </li>
                         <li>
-                          <a href="/stocks?q={{most_active[5]["symbol"]}}"
+                          <a href="/stocks/{{most_active[5]["symbol"]}}"
                             ><span class="panel__fullname"
                               ><h4>{{most_active[5]["symbol"]}}</h4>
                               <h6 class="panel__name">
@@ -523,7 +529,7 @@
                     <div class="panel__stockList">
                       <ul class="panel__list">
                         <li>
-                          <a href="/stocks?q={{most_active[6]["symbol"]}}"
+                          <a href="/stocks/{{most_active[6]["symbol"]}}"
                             ><span class="panel__fullname"
                               ><h4>{{most_active[6]["symbol"]}}</h4>
                               <h6 class="panel__name">
@@ -552,7 +558,7 @@
                           >
                         </li>
                         <li>
-                          <a href="/stocks?q={{most_active[7]["symbol"]}}"
+                          <a href="/stocks/{{most_active[7]["symbol"]}}"
                             ><span class="panel__fullname"
                               ><h4>{{most_active[7]["symbol"]}}</h4>
                               <h6 class="panel__name">
@@ -581,7 +587,7 @@
                           >
                         </li>
                         <li>
-                          <a href="/stocks?q={{most_active[8]["symbol"]}}"
+                          <a href="/stocks/{{most_active[8]["symbol"]}}"
                             ><span class="panel__fullname"
                               ><h4>{{most_active[8]["symbol"]}}</h4>
                               <h6 class="panel__name">

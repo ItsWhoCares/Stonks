@@ -14,8 +14,9 @@ let symbol;
 let stock_labels = [];
 let stock_data = [];
 
-const params = new URLSearchParams(window.location.search);
-symbol = params.get("q");
+// const params = new URLSearchParams(window.location.search);
+// console.log(params);
+symbol = window.location.href.split("/").pop();
 async function getOneDayChart() {
   return new Promise(async function (resolve) {
     var response = await fetch(`/OneDayChart?symbol=${symbol}`);

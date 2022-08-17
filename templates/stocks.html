@@ -400,15 +400,23 @@
                       </svg>
                     </div>
                     <div class="stockPage__trade-top">
-                      <h2>$24.44</h2>
-                      <h6 style="color: rgb(244, 83, 133)">-1.02 (-4.01%)</h6>
+                      <h2 id="latestprice"></h2>
+                      {% if key_info["Change"] > 0 %}
+                      <h6 
+                        style="color: rgb(58, 232, 133)">{{key_info["Change"]}} ({{key_info["ChangePercent"]}}%)
+                      </h6>
+                      {% else %}
+                      <h6 
+                        style="color: rgb(244, 83, 133)">{{key_info["Change"]}} ({{key_info["ChangePercent"]}}%)
+                      </h6>
+                      {% endif %}
                     </div>
                   </div>
                   <!-- <h6>
                     Extended Hours:
                     <span style="color: rgb(244, 83, 133)">$24.18 (-0.26)</span>
                   </h6> -->
-                  <h5>Buy AMC</h5>
+                  <h5>Buy {{key_info["Symbol"]}}</h5>
                   <div class="stockPage__buy-container">
                     <input
                       autocorrect="off"
@@ -552,7 +560,22 @@
         </section>
       </div>
     </main>
+
     <script>
+      let latestprice = document.getElementById("latestprice");
+      let stock_symbol = window.location.href.split("/").pop();
+      function get_price(){
+        fetch(`/latest_price/${symbol}`)
+          .then((response) => response.json())
+            .then((data) => latestprice.innerHTML = "$" + data);
+      }
+
+      get_price();
+      window.setInterval(function() {
+        get_price();
+      }, 10000);
+    </script>
+    <!-- <script>
       !(function (e) {
         function r(r) {
           for (
@@ -641,8 +664,8 @@
         var p = f;
         t();
       })([]);
-    </script>
-    <script src="/static/js/2.6ce77311.chunk.js"></script>
-    <script src="/static/js/main.66425039.chunk.js"></script>
+    </script> -->
+    <!-- <script src="/static/js/2.6ce77311.chunk.js"></script>
+    <script src="/static/js/main.66425039.chunk.js"></script> -->
   </body>
 </html>
