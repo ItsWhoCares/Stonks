@@ -3,3 +3,6 @@ venv
 __pycache__
 flask_session
 test.py
+URL.txt
+tt.py
+stonks.db

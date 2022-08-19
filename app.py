@@ -25,7 +25,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///stonks.db")
+db = SQL("sqlite:///stocklist.db")
 
 #Progres DataBase URL
 if not os.environ.get('DATABASE_URL'):
@@ -42,6 +42,8 @@ cur = conn.cursor()
 #Link IEX 
 c = p.Client(api_token='pk_a8218b82cc0b4e929be5cb4a3795e82c') 
 
+#is news on
+isnews = False
 
 @app.after_request
 def after_request(response):
@@ -68,10 +70,12 @@ def dashboard():
 @app.route("/stocks/<stock_symbol>", methods=["GET","POST"])
 @login_required
 def stocks(stock_symbol):
-    # stock_symbol = request.args.get("q")
     status = is_market_open()
     key_info = get_stock_info(stock_symbol)
-    articles = news(stock_symbol)
+    if isnews:
+        articles = fetch_news(stock_symbol)
+    else:
+        articles = None
     return render_template("stocks.html", status=status, key_info=key_info, articles=articles)
 
 @app.route("/latest_price/<stock_symbol>", methods=["GET","POST"])
@@ -274,3 +278,16 @@ def OneDayChart():
     chart["labels"].reverse()
     chart["data"].reverse()
     return chart
+
+
+
+# def fetch_news(symbol):
+#     row = cur.execute("SELECT * FROM news WHERE Symbol=%s;", (symbol,))
+    
+
+#Search for stock using symbol
+@app.route("/search/<symbol>", methods=["GET"])
+def search(symbol):
+    results = db.execute("SELECT * FROM stocklist where symbol LIKE ? LIMIT 10;", symbol.upper() + "%")
+    return results
+

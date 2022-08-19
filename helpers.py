@@ -9,7 +9,10 @@ from flask import redirect, render_template, request, session
 from functools import wraps
 
 
-c = p.Client(api_token='sk_bdf4a921914e4977b60e9b40fc9f1b3e') 
+api_one = p.Client(api_token='sk_bdf4a921914e4977b60e9b40fc9f1b3e') #whocares
+api_two = p.Client(api_token='pk_13bea402dd284dd994c2a87b076d4d9f')#cities
+
+api_key = api_two
 
 def apology(message, code=400):
     """Render message as an apology to user."""
@@ -64,7 +67,7 @@ def lookup(symbol):
         return None
 
 def Most_active():
-    ma = c.list()[:9]
+    ma = api_key.list()[:9]
     return [
         {
             "symbol": ma[0]["symbol"],
@@ -125,12 +128,12 @@ def Most_active():
 
 
 def is_market_open():
-    status = c.quote('aapl')
+    status = api_key.quote('aapl')
     return status["isUSMarketOpen"]
 
 
 def get_stock_info(symbol):
-    stock_info = c.quote(symbol)
+    stock_info = api_key.quote(symbol)
     if stock_info["latestVolume"] is None:
         stock_info["latestVolume"] = "---"
     else:
@@ -155,7 +158,7 @@ def usd(value):
 
 
 def news(symbol):
-    articles = c.news(symbol)[:3]
+    articles = api_key.news(symbol)[:3]
     return [
         {
             "Date": datetime.datetime.fromtimestamp(articles[0]["datetime"]/1000).strftime("%B %d"),

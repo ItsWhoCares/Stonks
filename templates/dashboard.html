@@ -104,13 +104,23 @@
                       </svg></li
                   ></a>
                 </ul>
-                <h5
-                  class="panel__status"
-                  id="panel__status"
-                  style="color: rgb(94, 250, 215)"
-                >
-                  Market status: Open
-                </h5>
+                {% if status %}
+              <h5
+                class="panel__status"
+                id="panel__status"
+                style="color: rgb(94, 250, 215)"
+              >
+                Market status: Open
+              </h5>
+              {% else %}
+              <h5
+                class="panel__status"
+                id="panel__status"
+                style="color: rgb(235, 88, 135)"
+              >
+                Market status: Closed
+              </h5>
+              {% endif %}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="leftbar__log"
