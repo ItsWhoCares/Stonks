@@ -4,17 +4,22 @@ let UL = document.getElementById("results");
 function box_focus() {
   document.getElementById("topbar__searchbar").style.boxShadow =
     "rgba(0, 0, 0, 0.1) 0px 0px 30px 30px";
+  if (input.value.length != 0) {
+    UL.style.display = "flex";
+  }
   console.log("focus");
 }
 
-function box_blur() {
+async function box_blur() {
   document.getElementById("topbar__searchbar").style.boxShadow = "none";
+  await new Promise((r) => setTimeout(r, 200));
+  UL.style.display = "none";
   console.log("blur");
 }
 
-async function fetch_res(symbol) {
-  f;
-}
+// async function fetch_res(symbol) {
+//   f;
+// }
 
 function search() {
   if (input.value == "") {
