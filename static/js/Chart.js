@@ -13,13 +13,13 @@ ctx.shadowOffsetY = 4;
 let symbol;
 let stock_labels = [];
 let stock_data = [];
-
+var chart;
 // const params = new URLSearchParams(window.location.search);
 // console.log(params);
 symbol = window.location.href.split("/").pop();
 async function getOneDayChart() {
   return new Promise(async function (resolve) {
-    var response = await fetch(`/OneDayChart?symbol=${symbol}`);
+    var response = await fetch(`/OneDayChart/${symbol}`);
     var res_data = await response.json();
     stock_labels = res_data["labels"];
     stock_data = res_data["data"];
@@ -29,7 +29,7 @@ async function getOneDayChart() {
 }
 
 function drawchart() {
-  var stock_chart = new Chart(ctx, {
+  chart = new Chart(ctx, {
     type: "line",
     data: {
       labels: stock_labels,
@@ -114,6 +114,56 @@ getOneDayChart().then(function () {
   drawchart();
 });
 
+async function getOneYearChart() {
+  return new Promise(async function (resolve) {
+    var response = await fetch(`/OneYearChart/${symbol}`);
+    var res_data = await response.json();
+    stock_labels = res_data["labels"];
+    stock_data = res_data["data"];
+    // console.log(data["labels"]);
+    chart.data.labels = stock_labels;
+    chart.data.datasets.data = stock_data;
+    resolve();
+  });
+}
+
+async function getOneMonthChart() {
+  return new Promise(async function (resolve) {
+    var response = await fetch(`/OneMonthChart/${symbol}`);
+    var res_data = await response.json();
+    stock_labels = res_data["labels"];
+    stock_data = res_data["data"];
+    // console.log(data["labels"]);
+    chart.data.labels = stock_labels;
+    chart.data.datasets.data = stock_data;
+    resolve();
+  });
+}
+
+function YearChart() {
+  getOneYearChart().then(() => {
+    chart.update();
+    chart.destroy();
+    drawchart();
+  });
+}
+
+function MonthChart() {
+  getOneMonthChart().then(() => {
+    chart.update();
+    chart.destroy();
+    drawchart();
+  });
+}
+
+function DayChart() {
+  getOneDayChart().then(() => {
+    chart.update();
+    chart.destroy();
+    drawchart();
+  });
+}
+
 // console.log(stock_data);
 
 // setTimeout(() => {
@@ -121,4 +171,20 @@ getOneDayChart().then(function () {
 // function printhehe() {
 //   console.log("Resized");
 // }
-window.addEventListener("resize", drawchart);
+function redraw() {
+  chart.destroy();
+  drawchart();
+}
+window.addEventListener("resize", redraw);
+
+function changeFocus(option) {
+  btn = document.getElementById(`${option}`);
+  setTimeout(function () {
+    var elems = document.querySelectorAll(".Chart__option");
+
+    [].forEach.call(elems, function (el) {
+      el.classList.remove("active");
+    });
+    btn.classList.add("active");
+  }, 200);
+}

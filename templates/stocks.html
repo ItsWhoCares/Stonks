@@ -369,13 +369,14 @@
                     id="stock_chart"
                     class="chartjs-render-monitor"
                   ></canvas>
-                  <script src="/static/js/Chart.js"></script>
+                  
                   <div class="Chart__timers">
-                    <h6 class="Chart__option" id="1y" onclick="">1Y</h6>
-                    <h6 class="Chart__option" id="1m">1M</h6>
-                    <h6 class="Chart__option" id="1d">1D</h6>
+                    <h6 class="Chart__option" id="1y" onclick="YearChart();changeFocus('1y');">1Y</h6>
+                    <h6 class="Chart__option" id="1m" onclick="MonthChart();changeFocus('1m');">1M</h6>
+                    <h6 class="Chart__option" id="1d" onclick="DayChart();changeFocus('1d');">1D</h6>
                   </div>
                 </div>
+                <script src="/static/js/Chart.js"></script>
                 <div class="stockPage__trade">
                   <div class="stockPage__mobile">
                     <div

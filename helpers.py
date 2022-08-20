@@ -66,6 +66,7 @@ def lookup(symbol):
     except (KeyError, TypeError, ValueError):
         return None
 
+
 def Most_active():
     ma = api_key.list()[:9]
     return [

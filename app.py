@@ -1,5 +1,6 @@
 import os
 import psycopg2
+import psycopg2.extras
 import pyEX as p
 import requests
 from cs50 import SQL
@@ -32,7 +33,7 @@ if not os.environ.get('DATABASE_URL'):
     raise RuntimeError("DATABASE_URL NOT SET")
 DATABASE_URL = os.environ['DATABASE_URL']
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-cur = conn.cursor()
+cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
 # Make sure API key is set
 # if not os.environ.get("API_KEY"):
@@ -41,6 +42,7 @@ cur = conn.cursor()
 
 #Link IEX 
 c = p.Client(api_token='pk_a8218b82cc0b4e929be5cb4a3795e82c') 
+api_key_two = 'pk_13bea402dd284dd994c2a87b076d4d9f'
 
 #is news on
 isnews = False
@@ -143,16 +145,16 @@ def login():
 
         # Query database for email
         cur.execute("SELECT * FROM users WHERE email = %s", (request.form.get("email"),))
-        rows = cur.fetchone()
+        row = getone()
         # Ensure email exists and password is correct
-        if rows is None:
+        if row is None:
             return render_template("login.html", error="Invalid Email or password")
 
         #Check password    
-        if not check_password_hash(rows[3], (request.form.get("password"))):
+        if not check_password_hash(row["hash"], (request.form.get("password"))):
             return render_template("login.html", error="Invalid Email or password")
         # Remember which user has logged in
-        session["user_id"] = rows[0]
+        session["user_id"] = row["id"]
 
         # Redirect user to home page
         return redirect("/dashboard")
@@ -206,20 +208,16 @@ def register():
         password = request.form.get("password")
 
         cur.execute("SELECT * FROM users WHERE username =%s;", (username,))
-        rows_uname = cur.fetchone()
+        row_uname = getone()
         cur.execute("SELECT * FROM users WHERE email =%s;", (email,))
-        rows_email = cur.fetchone()
-        print(type(rows_uname), type(rows_email))
-        cur.execute("SELECT * FROM users;")
-        rows = cur.fetchall()
-        print(rows)
+        row_email = getone()
         if(not username or not password or not email):
             return render_template("register.html",error="Empty Fields")
 
-        if(rows_uname is not None):
+        if(row_uname is not None):
             return render_template("register.html",error="Username Already Taken")
 
-        if(rows_email is not None):
+        if(row_email is not None):
             return render_template("register.html",error="Email Already Used")
 
         if(not is_email(email)):
@@ -229,9 +227,8 @@ def register():
         cur.execute("INSERT INTO users (username,email,hash) VALUES (%s,%s,%s);", (username, email, hash))
 
         cur.execute("SELECT * FROM users WHERE username=%s", (username,))
-        row = cur.fetchone()
-        print(type(row), row, row[0])
-        session["user_id"] = row[0]
+        row = getone()
+        session["user_id"] = row["id"]
         cur.execute("COMMIT")
         return redirect("/dashboard")
 
@@ -249,10 +246,9 @@ def sell():
     return apology("TODO")
 
 
-@app.route("/OneDayChart", methods=["GET"])
+@app.route("/OneDayChart/<symbol>", methods=["GET"])
 @login_required
-def OneDayChart():
-    symbol = request.args.get("symbol")
+def OneDayChart(symbol):
     api_key = 'SAOS0Y8B63XM4DPK'
     url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=1min&apikey={api_key}"
     response = requests.get(url)
@@ -280,6 +276,39 @@ def OneDayChart():
     return chart
 
 
+@app.route("/OneMonthChart/<symbol>", methods=["GET"])
+@login_required
+def OneMonthChart(symbol):
+    url = f"https://cloud.iexapis.com/beta/stock/{symbol}/batch?token={api_key_two}&types=chart,quote&range=1m"
+    response = requests.get(url)
+    stock_data = response.json()
+    chart = {
+        "labels":[],
+        "data":[]
+    }
+    for day in stock_data["chart"]:
+        chart["labels"].append(day["label"])
+        chart["data"].append(day["close"])
+
+    print(chart["labels"], chart["data"])
+    return chart
+
+
+@app.route("/OneYearChart/<symbol>", methods=["GET"])
+@login_required
+def OneYearChart(symbol):
+    url = f"https://cloud.iexapis.com/beta/stock/{symbol}/batch?token={api_key_two}&types=chart,quote&range=1y"
+    response = requests.get(url)
+    stock_data = response.json()
+    chart = {
+        "labels":[],
+        "data":[]
+    }
+    for day in stock_data["chart"]:
+        chart["labels"].append(day["label"])
+        chart["data"].append(day["close"])
+    return chart
+
 
 # def fetch_news(symbol):
 #     row = cur.execute("SELECT * FROM news WHERE Symbol=%s;", (symbol,))
@@ -291,3 +320,17 @@ def search(symbol):
     results = db.execute("SELECT * FROM stocklist where symbol LIKE ? LIMIT 10;", symbol.upper() + "%")
     return results
 
+def getone():
+    row = cur.fetchone()
+    if row is None:
+        return None
+    return dict(row)
+
+def getall():
+    data = []
+    rows = cur.fetchall()
+    if rows is None:
+        return None
+    for row in rows:
+        data.append(dict(row))
+    return data
