@@ -121,10 +121,12 @@
                 Market status: Closed
               </h5>
               {% endif %}
+              
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="leftbar__log"
                   viewBox="0 0 24 24"
+                  id = "logout"
                 >
                   <g>
                     <path fill="none" d="M0 0h24v24H0z"></path>
@@ -224,6 +226,7 @@
                         xmlns="http://www.w3.org/2000/svg"
                         class="leftbar__log"
                         viewBox="0 0 24 24"
+                        id="logout"
                       >
                         <g>
                           <path fill="none" d="M0 0h24v24H0z"></path>
@@ -290,7 +293,7 @@
                                 ></path>
                               </g>
                             </svg>
-                            <h3>$100,000</h3>
+                            <h3>{{balance}}</h3>
                           </div></a
                         >
                       </div>
@@ -636,5 +639,10 @@
         </section>
       </div>
     </main>
+    <script src=""
+    <script>
+      let logout = document.getElementById("logout")
+      logout.addEventListener("click",() => location.href = "/logout")
+    </script>
   </body>
 </html>

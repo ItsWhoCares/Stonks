@@ -9,10 +9,14 @@ from flask import redirect, render_template, request, session
 from functools import wraps
 
 
+if not os.environ.get('IEX_API_KEY'):
+    raise RuntimeError('IEX_API_KEY NOT SET')
+IEX_API_KEY = os.environ['IEX_API_KEY']
+
 api_one = p.Client(api_token='sk_bdf4a921914e4977b60e9b40fc9f1b3e') #whocares
 api_two = p.Client(api_token='pk_13bea402dd284dd994c2a87b076d4d9f')#cities
 
-api_key = api_two
+api_key = p.Client(api_token=IEX_API_KEY)
 
 def apology(message, code=400):
     """Render message as an apology to user."""
@@ -183,4 +187,5 @@ def news(symbol):
             "Url": articles[2]["url"]
         }
     ]
+
 

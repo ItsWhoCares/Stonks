@@ -348,7 +348,7 @@
                               ></path>
                             </g>
                           </svg>
-                          <h3>$100,000</h3>
+                          <h3>{{balance}}</h3>
                         </div></a
                       >
                     </div>
@@ -571,7 +571,7 @@
         </section>
       </div>
     </main>
-
+    <script src="/static/js/Main.js"></script>
     <script>
       let latestprice = document.getElementById("latestprice");
       let stock_symbol = window.location.href.split("/").pop();
@@ -581,6 +581,8 @@
             .then((data) => latestprice.innerHTML = "$" + data);
       }
       var status = {{status | tojson}};
+      document.getElementById("buy-input").disabled = true;
+      document.getElementById("buy-input").placeholder = "MARKET CLOSED";
       get_price();
       window.setInterval(function() {
         if(status === "true")

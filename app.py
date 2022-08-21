@@ -10,6 +10,7 @@ from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers import apology, login_required, lookup, usd, Most_active, is_market_open, get_stock_info, news
+from dbinterface import getBalance, oneYearMonthPrices, isBookmark, getBookmark
 from pyisemail import is_email
 # Configure application
 app = Flask(__name__)
@@ -41,8 +42,11 @@ cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
 
 #Link IEX 
-c = p.Client(api_token='pk_a8218b82cc0b4e929be5cb4a3795e82c') 
-api_key_two = 'pk_13bea402dd284dd994c2a87b076d4d9f'
+if not os.environ.get('IEX_API_KEY'):
+    raise RuntimeError('IEX_API_KEY NOT SET')
+IEX_API_KEY = os.environ['IEX_API_KEY']
+c = p.Client(api_token=IEX_API_KEY) 
+api_key_two = IEX_API_KEY
 
 #is news on
 isnews = False
@@ -66,7 +70,8 @@ def index():
 def dashboard():
     most_active_9 = Most_active()
     status = is_market_open()
-    return render_template("dashboard.html", status=status, most_active=most_active_9)
+    balance = getBalance(session["user_id"])
+    return render_template("dashboard.html", status=status, most_active=most_active_9, balance=balance)
 
 
 @app.route("/stocks/<stock_symbol>", methods=["GET","POST"])
@@ -74,11 +79,12 @@ def dashboard():
 def stocks(stock_symbol):
     status = is_market_open()
     key_info = get_stock_info(stock_symbol)
+    balance = getBalance(session["user_id"])
     if isnews:
         articles = fetch_news(stock_symbol)
     else:
         articles = None
-    return render_template("stocks.html", status=status, key_info=key_info, articles=articles)
+    return render_template("stocks.html", status=status, key_info=key_info, articles=articles, balance=balance)
 
 @app.route("/latest_price/<stock_symbol>", methods=["GET","POST"])
 def latest_price(stock_symbol):
@@ -163,6 +169,19 @@ def login():
     else:
         return render_template("login.html")
 
+@app.route("/portfolio")
+@login_required
+def portfolio():
+    return render_template("portfolio.html")
+
+@app.route("/watchlist")
+@login_required
+def watchlist():
+    bookmarks = getBookmark(session["user_id"])
+    status = is_market_open()
+    balance = getBalance(session["user_id"])
+    print(bookmarks)
+    return render_template("watchlist.html", status=status, balance=balance, bookmarks=bookmarks)
 
 @app.route("/logout")
 def logout():
@@ -279,9 +298,7 @@ def OneDayChart(symbol):
 @app.route("/OneMonthChart/<symbol>", methods=["GET"])
 @login_required
 def OneMonthChart(symbol):
-    url = f"https://cloud.iexapis.com/beta/stock/{symbol}/batch?token={api_key_two}&types=chart,quote&range=1m"
-    response = requests.get(url)
-    stock_data = response.json()
+    stock_data = oneYearMonthPrices(symbol)["oneMonth"]
     chart = {
         "labels":[],
         "data":[]
@@ -290,16 +307,13 @@ def OneMonthChart(symbol):
         chart["labels"].append(day["label"])
         chart["data"].append(day["close"])
 
-    print(chart["labels"], chart["data"])
     return chart
 
 
 @app.route("/OneYearChart/<symbol>", methods=["GET"])
 @login_required
 def OneYearChart(symbol):
-    url = f"https://cloud.iexapis.com/beta/stock/{symbol}/batch?token={api_key_two}&types=chart,quote&range=1y"
-    response = requests.get(url)
-    stock_data = response.json()
+    stock_data = oneYearMonthPrices(symbol)["oneYear"]
     chart = {
         "labels":[],
         "data":[]
@@ -307,6 +321,7 @@ def OneYearChart(symbol):
     for day in stock_data["chart"]:
         chart["labels"].append(day["label"])
         chart["data"].append(day["close"])
+
     return chart
 
 
@@ -329,8 +344,27 @@ def getone():
 def getall():
     data = []
     rows = cur.fetchall()
-    if rows is None:
+    if not rows:
         return None
     for row in rows:
         data.append(dict(row))
     return data
+
+
+
+@app.route("/bookmark/<symbol>/<todo>", methods=["GET"])
+@login_required
+def bookmark(symbol, todo):
+    cur.execute("SELECT * FROM watchlist WHERE id=%s;",(session["user_id"],))
+    res = getone()
+    if res is not None and todo == "add":
+        stock = db.execute("SELECT * FROM stocklist WHERE symbol=?", symbol)
+        cur.execute("INSERT INTO watchlist VALUES(%s,%s,%s);",(session["user_id"], symbol.upper(), stock["name"]))
+        cur.execute("COMMIT;")
+        return True
+    elif res is None and todo == "remove":
+        cur.execute("DELETE watchlist WHERE id=%s AND symbol=%s;", (session["user_id"], symbol.upper()))
+        cur.execute("COMMIT;")
+        return True
+    return False
+

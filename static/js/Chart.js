@@ -52,7 +52,7 @@ function drawchart() {
       layout: {
         padding: {
           right: 25,
-          left: 25,
+          left: 0, //left paddin of chart
         },
       },
       tooltips: {
