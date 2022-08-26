@@ -342,7 +342,8 @@
                 </div>
               </div>
             </nav>
-            <div class="errorMsg">
+            {% if not bookmarks %}
+            <div class="errorMsg" id="error">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g>
                   <path fill="none" d="M0 0h24v24H0z"></path>
@@ -351,15 +352,93 @@
                   ></path>
                 </g>
               </svg>
-              {% if not bookmarks %}
+
               <h3>You didn't bookmarked any stocks yet.</h3>
-              {% endif %}
+            </div>
+            {% else %}
+            <table class="portfolio__list" id="bookmarkstable">
+              <tbody>
+                <tr>
+                  <th>SYMBOL</th>
+                  <th>NAME</th>
+                  <th></th>
+                  <th>CHANGE (%)</th>
+                  <th>CURRENT VALUE</th>
+                  <th></th>
+                </tr>
+                {% for stock in bookmarks %}
+                <tr>
+                  <td>
+                    <a href="/stocks/{{stock['symbol']}}"
+                      >{{stock["Symbol"]}}</a
+                    >
+                  </td>
+                  <td>{{stock["CompanyName"]}}</td>
+                  {% if stock["Change"] < 0 %}
+                  <td style="color: rgb(244, 83, 133)"></td>
+                  <td style="color: rgb(244, 83, 133)">{{stock["Change"]}}%</td>
+                  {% else %}
+                  <td style="color: rgb(102, 249, 218)"></td>
+                  <td style="color: rgb(102, 249, 218)">
+                    +{{stock["Change"]}}%
+                  </td>
+                  {% endif %}
+                  <td>${{stock["LatestPrice"]}}</td>
+                  <td>
+                    <svg
+                      onclick="deleteRow(this, `{{stock['Symbol']}}`)"
+                      id="bookmark"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="25"
+                      height="25"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke="#ddd"
+                      style="fill: rgb(221, 221, 221); cursor: pointer"
+                    >
+                      <path
+                        d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
+                      ></path>
+                    </svg>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% endif %}
+            <div class="errorMsg" style="display: none" id="error">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <g>
+                  <path fill="none" d="M0 0h24v24H0z"></path>
+                  <path
+                    d="M5.373 4.51A9.962 9.962 0 0 1 12 2c5.523 0 10 4.477 10 10a9.954 9.954 0 0 1-1.793 5.715L17.5 12H20A8 8 0 0 0 6.274 6.413l-.9-1.902zm13.254 14.98A9.962 9.962 0 0 1 12 22C6.477 22 2 17.523 2 12c0-2.125.663-4.095 1.793-5.715L6.5 12H4a8 8 0 0 0 13.726 5.587l.9 1.902zm-5.213-4.662L10.586 12l-2.829 2.828-1.414-1.414 4.243-4.242L13.414 12l2.829-2.828 1.414 1.414-4.243 4.242z"
+                  ></path>
+                </g>
+              </svg>
+
+              <h3>You didn't bookmarked any stocks yet.</h3>
             </div>
           </div>
         </div>
       </div>
     </main>
     <script>
+      async function deleteRow(r, symbol) {
+        var i = r.parentNode.parentNode.rowIndex;
+        table = document.getElementById("bookmarkstable");
+        table.deleteRow(i);
+        if (table.rows.length - 1 == 0) {
+          table.remove();
+          document.getElementById("error").style.display = null;
+          //location.reload();
+        }
+        await fetch(`/bookmark/${symbol}`);
+      }
+    </script>
+    <!-- <script>
       !(function (e) {
         function r(r) {
           for (
@@ -448,7 +527,7 @@
         var p = f;
         t();
       })([]);
-    </script>
+    </script> -->
     <script>
       let logout = document.getElementById("logout");
       logout.addEventListener("click", () => (location.href = "/logout"));

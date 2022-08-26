@@ -1,0 +1,17 @@
+/* Error: semicolons aren't allowed in the indented syntax.
+ *   ,
+ * 9 |     font-size: $max-font-size;
+ *   |                              ^
+ *   '
+ *   dashboard.sass 9:30  root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: semicolons aren't allowed in the indented syntax.\a   \2577 \a 9 \2502      font-size: $max-font-size;\d\a   \2502                               ^\a   \2575 \a   dashboard.sass 9:30  root stylesheet";
+}

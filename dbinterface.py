@@ -5,6 +5,7 @@ import requests
 import time
 import json
 
+from helpers import get_stock_info
 
 #Progres DataBase URL
 if not os.environ.get('DATABASE_URL'):
@@ -71,8 +72,11 @@ def isBookmark(id, symbol):
     return True
 
 def getBookmark(id):
-    cur.execute("SELECT symbol,name FROM watchlist WHERE id=%s;", (id,))
+    cur.execute("SELECT symbol FROM watchlist WHERE id=%s;", (id,))
     res = getall()
     if res is None:
         return False
-    return res
+    bookmarks = []
+    for row in res:
+        bookmarks.append(get_stock_info(row["symbol"]))
+    return bookmarks

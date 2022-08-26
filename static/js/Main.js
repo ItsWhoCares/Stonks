@@ -1,5 +1,2 @@
-// book = document.getElementById("bookmark");
-
-// book.addEventListner("click", () => {
-
-// })
+let logout = document.getElementById("logout");
+logout.addEventListener("click", () => (location.href = "/logout"));

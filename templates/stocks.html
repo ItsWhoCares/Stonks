@@ -179,6 +179,7 @@
                 xmlns="http://www.w3.org/2000/svg"
                 class="leftbar__log"
                 viewBox="0 0 24 24"
+                id = "logout"
               >
                 <g>
                   <path fill="none" d="M0 0h24v24H0z"></path>
@@ -575,21 +576,65 @@
     <script>
       let latestprice = document.getElementById("latestprice");
       let stock_symbol = window.location.href.split("/").pop();
+
+      //update latest price
       function get_price(){
         fetch(`/latest_price/${symbol}`)
           .then((response) => response.json())
             .then((data) => latestprice.innerHTML = "$" + data);
       }
+
+      //market status
       var status = {{status | tojson}};
-      document.getElementById("buy-input").disabled = true;
-      document.getElementById("buy-input").placeholder = "MARKET CLOSED";
+
+      //disable buying when market is closed
+      if(!status){
+        document.getElementById("buy-input").disabled = true;
+        document.getElementById("buy-input").placeholder = "MARKET CLOSED";
+      }
+
+      //initail latest price
       get_price();
+      isbook = {{isbookmarked | tojson}};
+      bookmark_icon = document.getElementById("bookmark");
+
+      //initial bookmark check
+      if(isbook)
+      {
+        bookmark_icon.style.fill = "rgb(221, 221, 221)";
+      }
+
+      //add or remove bookmark
+      function bookmark()
+      {
+        fetch(`/bookmark/${symbol}`)
+          .then((response) => response.json())
+            .then((data) => {
+              console.log(data);
+              //added bookmark
+              if(data == "added")
+              {
+                //change icon
+                bookmark_icon.style.fill = "rgb(221, 221, 221)";
+              }
+              //removed bookmark
+              else
+              {
+                //change icon
+                bookmark_icon.style.fill = null;
+              }
+            })
+      }
+      //call bookmark function when icon is clicked
+      bookmark_icon.addEventListener("click", bookmark);
+
+      //get latest price every 10 seconds
       window.setInterval(function() {
         if(status === "true")
         {
           get_price();
         }
-      }, 10000);
+      }, 100000);
     </script>
     <!-- <script>
       !(function (e) {

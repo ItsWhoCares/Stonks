@@ -3,6 +3,7 @@ import psycopg2
 import psycopg2.extras
 import pyEX as p
 import requests
+import json
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
@@ -84,7 +85,8 @@ def stocks(stock_symbol):
         articles = fetch_news(stock_symbol)
     else:
         articles = None
-    return render_template("stocks.html", status=status, key_info=key_info, articles=articles, balance=balance)
+    isbookmarked = isBookmark(session["user_id"], stock_symbol)
+    return render_template("stocks.html", status=status, key_info=key_info, articles=articles, balance=balance, isbookmarked=isbookmarked)
 
 @app.route("/latest_price/<stock_symbol>", methods=["GET","POST"])
 def latest_price(stock_symbol):
@@ -180,7 +182,6 @@ def watchlist():
     bookmarks = getBookmark(session["user_id"])
     status = is_market_open()
     balance = getBalance(session["user_id"])
-    print(bookmarks)
     return render_template("watchlist.html", status=status, balance=balance, bookmarks=bookmarks)
 
 @app.route("/logout")
@@ -332,7 +333,7 @@ def OneYearChart(symbol):
 #Search for stock using symbol
 @app.route("/search/<symbol>", methods=["GET"])
 def search(symbol):
-    results = db.execute("SELECT * FROM stocklist where symbol LIKE ? LIMIT 10;", symbol.upper() + "%")
+    results = db.execute("SELECT * FROM stocklist where symbol LIKE ? OR name LIKE ? LIMIT 10;", symbol.upper() + "%", symbol.upper() + "%")
     return results
 
 def getone():
@@ -352,19 +353,19 @@ def getall():
 
 
 
-@app.route("/bookmark/<symbol>/<todo>", methods=["GET"])
+@app.route("/bookmark/<symbol>", methods=["GET"])
 @login_required
-def bookmark(symbol, todo):
-    cur.execute("SELECT * FROM watchlist WHERE id=%s;",(session["user_id"],))
+def bookmark(symbol):
+    cur.execute("SELECT * FROM watchlist WHERE id=%s AND symbol=%s;",(session["user_id"],symbol.upper()))
     res = getone()
-    if res is not None and todo == "add":
+    if res is None:
         stock = db.execute("SELECT * FROM stocklist WHERE symbol=?", symbol)
-        cur.execute("INSERT INTO watchlist VALUES(%s,%s,%s);",(session["user_id"], symbol.upper(), stock["name"]))
+        cur.execute("INSERT INTO watchlist VALUES(%s,%s);",(session["user_id"], symbol.upper()))
         cur.execute("COMMIT;")
-        return True
-    elif res is None and todo == "remove":
-        cur.execute("DELETE watchlist WHERE id=%s AND symbol=%s;", (session["user_id"], symbol.upper()))
+        return json.dumps("added")
+    elif res is not None:
+        cur.execute("DELETE FROM watchlist WHERE id=%s AND symbol=%s;", (session["user_id"], symbol.upper()))
         cur.execute("COMMIT;")
-        return True
-    return False
+        return json.dumps("removed")
+    return json.dumps("error")
 
