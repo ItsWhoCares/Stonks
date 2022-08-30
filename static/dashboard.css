@@ -129,7 +129,7 @@ a {
   min-width: 40px;
   position: absolute;
   top: 30px;
-  fill: #222831;
+  fill: rgb(221, 221, 221);
 }
 @media only screen and (max-width: 600px) {
   .leftbar {

@@ -21,7 +21,9 @@
     <link href="/static/dashboard.css" rel="stylesheet" />
     <link href="/static/topbar.css" rel="stylesheet" />
     <link href="/static/css/portfolio.css" rel="stylesheet" />
-    <title>StalkStock - Portfolio</title>
+    <link href="/static/css/trends.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <title>StalkStock - Market Trends</title>
     <!-- <link href="/static/css/main.41b99ec9.chunk.css" rel="stylesheet" /> -->
     <style type="text/css">
       /* Chart.js */
@@ -113,28 +115,15 @@
                   >
                     <path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"></path>
                     <path d="M9 22V12h6v10M2 10.6L12 2l10 8.6"></path>
-                  </svg></li
-              ></a>
-
+                  </svg></li></a
+              >
+              
               <a href="/trends">
                 <li>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="48"
-                    height="48"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#dddddd"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    style="stroke: rgb(221, 221, 221)"
-                  >
-                    <path d="M12 20v-6M6 20V10M18 20V4" />
-                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#dddddd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: rgb(94, 181, 248)"><path d="M12 20v-6M6 20V10M18 20V4"/></svg>
                 </li>
               </a>
-
+              
               <a href="/portfolio"
                 ><li>
                   <svg
@@ -164,7 +153,7 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    style="stroke: rgb(94, 181, 248)"
+                    style="stroke: rgb(221, 221, 221)"
                   >
                     <path
                       d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
@@ -364,192 +353,162 @@
                 </div>
               </div>
             </nav>
-            {% if not bookmarks %}
-            <div class="errorMsg" id="error">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <g>
-                  <path fill="none" d="M0 0h24v24H0z"></path>
-                  <path
-                    d="M5.373 4.51A9.962 9.962 0 0 1 12 2c5.523 0 10 4.477 10 10a9.954 9.954 0 0 1-1.793 5.715L17.5 12H20A8 8 0 0 0 6.274 6.413l-.9-1.902zm13.254 14.98A9.962 9.962 0 0 1 12 22C6.477 22 2 17.523 2 12c0-2.125.663-4.095 1.793-5.715L6.5 12H4a8 8 0 0 0 13.726 5.587l.9 1.902zm-5.213-4.662L10.586 12l-2.829 2.828-1.414-1.414 4.243-4.242L13.414 12l2.829-2.828 1.414 1.414-4.243 4.242z"
-                  ></path>
-                </g>
-              </svg>
-
-              <h3>You didn't bookmarked any stocks yet.</h3>
-            </div>
-            {% else %}
-            <table class="portfolio__list" id="bookmarkstable">
-              <tbody>
-                <tr>
-                  <th>SYMBOL</th>
-                  <th>NAME</th>
-                  <th></th>
-                  <th>CHANGE (%)</th>
-                  <th>CURRENT VALUE</th>
-                  <th></th>
-                </tr>
-                {% for stock in bookmarks %}
-                <tr>
-                  <td>
-                    <a href="/stocks/{{stock['symbol']}}"
-                      >{{stock["Symbol"]}}</a
-                    >
-                  </td>
-                  <td>{{stock["CompanyName"]}}</td>
-                  {% if stock["Change"] < 0 %}
-                  <td style="color: rgb(244, 83, 133)"></td>
-                  <td style="color: rgb(244, 83, 133)">{{stock["Change"]}}%</td>
-                  {% else %}
-                  <td style="color: rgb(102, 249, 218)"></td>
-                  <td style="color: rgb(102, 249, 218)">
-                    +{{stock["Change"]}}%
-                  </td>
-                  {% endif %}
-                  <td>${{stock["LatestPrice"]}}</td>
-                  <td>
+            <!--  -->
+            <div class="panel__container">
+              <div class="panel__top">
+                <div class="panel__title">
+                  <div style="display: flex; align-items: center; width: 33%;">
                     <svg
-                      onclick="deleteRow(this, `{{stock['Symbol']}}`)"
-                      id="bookmark"
                       xmlns="http://www.w3.org/2000/svg"
-                      width="25"
-                      height="25"
+                      class="panel__portfolio-title"
+                      width="48"
+                      height="48"
                       viewBox="0 0 24 24"
                       fill="none"
+                      stroke="#dddddd"
                       stroke-width="2"
                       stroke-linecap="round"
                       stroke-linejoin="round"
-                      stroke="#ddd"
-                      style="fill: rgb(221, 221, 221); cursor: pointer"
+                      style="stroke: rgb(221, 221, 221)"
                     >
-                      <path
-                        d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
-                      ></path>
+                      <path d="M12 20v-6M6 20V10M18 20V4" />
                     </svg>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-            {% endif %}
-            <div class="errorMsg" style="display: none" id="error">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <g>
-                  <path fill="none" d="M0 0h24v24H0z"></path>
-                  <path
-                    d="M5.373 4.51A9.962 9.962 0 0 1 12 2c5.523 0 10 4.477 10 10a9.954 9.954 0 0 1-1.793 5.715L17.5 12H20A8 8 0 0 0 6.274 6.413l-.9-1.902zm13.254 14.98A9.962 9.962 0 0 1 12 22C6.477 22 2 17.523 2 12c0-2.125.663-4.095 1.793-5.715L6.5 12H4a8 8 0 0 0 13.726 5.587l.9 1.902zm-5.213-4.662L10.586 12l-2.829 2.828-1.414-1.414 4.243-4.242L13.414 12l2.829-2.828 1.414 1.414-4.243 4.242z"
-                  ></path>
-                </g>
-              </svg>
+                    <h2 style="font-size: 25px">Market Trends</h2>
+                    <div class="Trends">
+                      <h3 class="Chart__option active" id="gainer">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          style="position: relative; top: 2px"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="rgb(221, 221, 221)"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path d="M3 3v18h18" />
+                          <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" />
+                        </svg>
 
-              <h3>You didn't bookmarked any stocks yet.</h3>
+                        Top Gainers
+                      </h3>
+
+                      <h3 class="Trends__option" id="1m">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          style="position: relative; top: 2px"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="rgb(221, 221, 221)"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path d="M3 3v18h18" />
+                          <path d="M18.7 14.3L15 10.5l-2.7 2.7L7 8" /></svg
+                        >Top Lossers
+                      </h3>
+                      <h3 class="Trends__option" id="1d">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          style="position: relative; top: 2px; right: 5px"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="rgb(221, 221, 221)"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path d="M18.6 18.6L12 12V2.5" />
+                          <circle cx="12" cy="12" r="10" /></svg
+                        >Top By Volume
+                      </h3>
+                    </div>
+                  </div>
+                  
+                  <div class="panel__container">
+                    <div class="panel__top">
+                      <div class="panel__title">
+                        <div style="display: flex; align-items: center; width: 33%;">
+                          
+                          <h3>Company Name</h3>
+                          <div class="Trendsinfo">
+                            <h3 style="margin: 0 0px;">Market Price</h3>
+                            <h3>52 Week High</h3>
+                            <h3>52 Week Low</h3>
+                          </div>
+                        </div>
+
+                  <div class="panel__bottom">
+                    <div class="panel__stockList">
+                      <ul class="panel__list">
+                        {% for stock in stocks %}
+                        <li>
+                          <a href="/stocks/{{stock['Symbol']}}"
+                            ><span class="panel__fullname"
+                            style="width: 20%;"
+                              ><h4>{{stock['Symbol']}}</h4>
+                              <h6 class="panel__name">{{stock["CompanyName"]}}</h6></span
+                            >
+                            <div class="panel__list-change">
+                              <canvas
+                                id="stock_chart_{{stock['Symbol']}}"
+                                class="chartjs-render-monitor"
+                                height="33px"
+                                width="200px"
+                              ></canvas>
+                            </div>
+                            
+                            <div class="panel__list-change">
+                              <h4>${{stock["LatestPrice"]}}</h4>
+                              {% if stock["Change"] is not none and stock["Change"] < 0 %}
+                              <h5
+                                style="
+                                  color: rgb(244, 84, 133);
+                                  margin: 5px 0px 0px;
+                                  text-shadow: rgba(244, 84, 133, 0.5) 0px 0px
+                                    7px;
+                                "
+                              >
+                                -{{stock["Change"]}}%
+                              </h5>
+                              {% else %}
+                              <h5 style="color: rgb(102, 249, 218); margin: 5px 0px 0px; text-shadow: rgba(102, 249, 218, 0.5) 0px 0px 7px;">+{{stock["Change"]}}%</h5>
+                              {% endif %}
+                            </div>
+                            <div class="panel__list-change">
+                              <h4 style="color: rgb(102, 249, 218); margin: 5px 0px 0px; text-shadow: rgba(102, 249, 218, 0.5) 0px 0px 7px;">${{stock["52 Week High"]}}</h4>
+                            </div><div class="panel__list-change">
+                              <h4 style="
+                              color: rgb(244, 84, 133);
+                              margin: 5px 0px 0px;
+                              text-shadow: rgba(244, 84, 133, 0.5) 0px 0px
+                                7px;
+                            ">${{stock["52 Week Low"]}}</h4>
+                            </div>
+
+                            </a
+                          >
+                        </li>
+                        {% endfor %}
+                      </ul>
+                      <script src="/static/js/MiniChart.js"></script>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </main>
-    <script>
-      async function deleteRow(r, symbol) {
-        var i = r.parentNode.parentNode.rowIndex;
-        table = document.getElementById("bookmarkstable");
-        table.deleteRow(i);
-        if (table.rows.length - 1 == 0) {
-          table.remove();
-          document.getElementById("error").style.display = null;
-          //location.reload();
-        }
-        await fetch(`/bookmark/${symbol}`);
-      }
-    </script>
-    <!-- <script>
-      !(function (e) {
-        function r(r) {
-          for (
-            var n, l, a = r[0], f = r[1], i = r[2], c = 0, s = [];
-            c < a.length;
-            c++
-          )
-            (l = a[c]),
-              Object.prototype.hasOwnProperty.call(o, l) &&
-                o[l] &&
-                s.push(o[l][0]),
-              (o[l] = 0);
-          for (n in f)
-            Object.prototype.hasOwnProperty.call(f, n) && (e[n] = f[n]);
-          for (p && p(r); s.length; ) s.shift()();
-          return u.push.apply(u, i || []), t();
-        }
-        function t() {
-          for (var e, r = 0; r < u.length; r++) {
-            for (var t = u[r], n = !0, a = 1; a < t.length; a++) {
-              var f = t[a];
-              0 !== o[f] && (n = !1);
-            }
-            n && (u.splice(r--, 1), (e = l((l.s = t[0]))));
-          }
-          return e;
-        }
-        var n = {},
-          o = { 1: 0 },
-          u = [];
-        function l(r) {
-          if (n[r]) return n[r].exports;
-          var t = (n[r] = { i: r, l: !1, exports: {} });
-          return e[r].call(t.exports, t, t.exports, l), (t.l = !0), t.exports;
-        }
-        (l.m = e),
-          (l.c = n),
-          (l.d = function (e, r, t) {
-            l.o(e, r) ||
-              Object.defineProperty(e, r, { enumerable: !0, get: t });
-          }),
-          (l.r = function (e) {
-            "undefined" != typeof Symbol &&
-              Symbol.toStringTag &&
-              Object.defineProperty(e, Symbol.toStringTag, { value: "Module" }),
-              Object.defineProperty(e, "__esModule", { value: !0 });
-          }),
-          (l.t = function (e, r) {
-            if ((1 & r && (e = l(e)), 8 & r)) return e;
-            if (4 & r && "object" == typeof e && e && e.__esModule) return e;
-            var t = Object.create(null);
-            if (
-              (l.r(t),
-              Object.defineProperty(t, "default", { enumerable: !0, value: e }),
-              2 & r && "string" != typeof e)
-            )
-              for (var n in e)
-                l.d(
-                  t,
-                  n,
-                  function (r) {
-                    return e[r];
-                  }.bind(null, n)
-                );
-            return t;
-          }),
-          (l.n = function (e) {
-            var r =
-              e && e.__esModule
-                ? function () {
-                    return e.default;
-                  }
-                : function () {
-                    return e;
-                  };
-            return l.d(r, "a", r), r;
-          }),
-          (l.o = function (e, r) {
-            return Object.prototype.hasOwnProperty.call(e, r);
-          }),
-          (l.p = "/");
-        var a = (this.webpackJsonpTrader24 = this.webpackJsonpTrader24 || []),
-          f = a.push.bind(a);
-        (a.push = r), (a = a.slice());
-        for (var i = 0; i < a.length; i++) r(a[i]);
-        var p = f;
-        t();
-      })([]);
-    </script> -->
     <script>
       let logout = document.getElementById("logout");
       logout.addEventListener("click", () => (location.href = "/logout"));

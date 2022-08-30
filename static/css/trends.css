@@ -1,0 +1,56 @@
+.Trends {
+  position: absolute;
+  right: 20px;
+  color: white;
+  transition: all 0.5s;
+  cursor: pointer;
+  display: flex;
+}
+
+.Trends h3 {
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: #222831;
+  margin: 0 3px;
+  transition: all 0.5s;
+}
+.Trends h3:hover {
+  background-color: #30475e;
+}
+.Trends .active {
+  background-color: #30475e;
+}
+
+.Trendsinfo {
+  position: absolute;
+  right: 35px;
+  color: white;
+  transition: all 0.5s;
+  cursor: pointer;
+  display: flex;
+  width: 38%;
+  justify-content: space-between;
+}
+
+.Trendsinfo .active {
+  background-color: #30475e;
+}
+
+.Trendsinfo h3 {
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: #222831;
+  margin: 0 10px;
+  transition: all 0.5s;
+}
+.Trendsinfo h3:hover {
+  background-color: #30475e;
+}
+
+.panel__stocklist {
+  width: -webkit-fill-available;
+}
+
+.space {
+  justify-content: space-between;
+}

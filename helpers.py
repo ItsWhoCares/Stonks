@@ -73,6 +73,7 @@ def lookup(symbol):
 
 def Most_active():
     ma = api_key.list()[:9]
+    print(ma)
     return [
         {
             "symbol": ma[0]["symbol"],
@@ -189,3 +190,20 @@ def news(symbol):
     ]
 
 
+def getTopGainers():
+    url = f"https://cloud.iexapis.com/stable/stock/market/list/gainers/?token={IEX_API_KEY}"
+    res = requests.get(url)
+    stocks = res.json()
+    topGainers = []
+    for stock in stocks:
+        if stock["change"] is not None:
+            topGainers.append({
+            "Symbol": stock["symbol"],
+            "CompanyName": stock["companyName"],
+            "LatestPrice": stock["latestPrice"],
+            "Change": stock["change"],
+            "52 Week High": stock["week52High"],
+            "52 Week Low": stock["week52Low"]
+        })
+
+    return topGainers[:5]
