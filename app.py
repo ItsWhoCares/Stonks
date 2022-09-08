@@ -76,12 +76,19 @@ def dashboard():
     return render_template("dashboard.html", status=status, most_active=most_active_9, balance=balance)
 
 
-@app.route("/trends")
+@app.route("/trends/<ReqDataType>")
 @login_required
-def trends():
+def trends(ReqDataType):
     status = is_market_open()
     balance = getBalance(session["user_id"])
     stocks = getTopGainers()
+    match ReqDataType:
+        case "topGainers":
+            stocks = getTopGainers()
+        case "topLosers":
+            stocks = getTopLosers()
+        case "topVolume":
+            stocks = getTopVolume()
     return render_template("trends.html", status=status, balance=balance, stocks=stocks)
 
 
@@ -279,33 +286,7 @@ def sell():
 @app.route("/OneDayChart/<symbol>", methods=["GET"])
 @login_required
 def OneDayChart(symbol):
-    api_key = 'SAOS0Y8B63XM4DPK'
-    url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=1min&apikey={api_key}"
-    response = requests.get(url)
-
-    stock_data = response.json()
-    if "Error Message" in stock_data:
-        return "Error"
-    labels = []
-    data = []
-    chart = {
-        "labels":[],
-        "data":[]
-    }
-    for label in stock_data["Time Series (1min)"]:
-        labels.append(label.split(" ")[1][:5])
-    
-    for label in stock_data["Time Series (1min)"]:
-        data.append(round(float(stock_data["Time Series (1min)"][label]["4. close"]),2))
-
-    for label in labels:
-        chart["labels"].append(label)
-
-    for dat in data:
-        chart["data"].append(dat)
-    chart["labels"].reverse()
-    chart["data"].reverse()
-    return chart
+    return getOneDayChart(symbol)
 
 
 @app.route("/OneMonthChart/<symbol>", methods=["GET"])
@@ -381,9 +362,16 @@ def bookmark(symbol):
         return json.dumps("removed")
     return json.dumps("error")
 
-# @app.route("getData/<ReqDataType>")
-# @login_required
-# def getData(ReqDataType):
-#     match ReqDataType:
-#         case 
+@app.route("/getData/<ReqDataType>")
+@login_required
+def getData(ReqDataType):
+    match ReqDataType:
+        case "topGainers":
+            return getTopGainers()
+        case "topLosers":
+            return getTopLosers()
+        case "topVolume":
+            print(getTopVolume)
+            return getTopVolume()
+    return "Error"
 

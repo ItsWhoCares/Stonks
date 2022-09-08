@@ -118,7 +118,7 @@
                   </svg></li></a
               >
               
-              <a href="/trends">
+              <a href="/trends/topGainers">
                 <li>
                   <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#dddddd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: rgb(94, 181, 248)"><path d="M12 20v-6M6 20V10M18 20V4"/></svg>
                 </li>
@@ -375,7 +375,7 @@
                     </svg>
                     <h2 style="font-size: 25px">Market Trends</h2>
                     <div class="Trends">
-                      <h3 class="Chart__option active" id="Gainers" onclick="topGainers();">
+                      <h3 class="Chart__option active" id="Gainers" onclick="topGainers();fetchTopGainersChart();">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           style="position: relative; top: 2px"
@@ -395,7 +395,7 @@
                         Top Gainers
                       </h3>
 
-                      <h3 class="Trends__option" id="Losers" onclick="topLosers()">
+                      <h3 class="Trends__option" id="Losers" onclick="topLosers();fetchTopLosersChart();">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           style="position: relative; top: 2px"
@@ -412,7 +412,7 @@
                           <path d="M18.7 14.3L15 10.5l-2.7 2.7L7 8" /></svg
                         >Top Lossers
                       </h3>
-                      <h3 class="Trends__option" id="Volume">
+                      <h3 class="Trends__option" id="Volume" onclick="topVolume();fetchTopVolumeChart();">
                         <svg
                           onclick="topVolume()"
                           xmlns="http://www.w3.org/2000/svg"
@@ -516,6 +516,20 @@
     <script>
       let logout = document.getElementById("logout");
       logout.addEventListener("click", () => (location.href = "/logout"));
+      let url = window.location.href.split("/trends")[1];
+      console.log(url);
+      if(url == "/topLosers")
+      {
+        document.getElementById("Gainers").classList.remove("active");
+        document.getElementById("Losers").classList.add("active");
+        document.getElementById("Volume").classList.remove("active");
+      }
+      else if(url == "/topVolume")
+      {
+        document.getElementById("Gainers").classList.remove("active");
+        document.getElementById("Losers").classList.remove("active");
+        document.getElementById("Volume").classList.add("active");
+      }
     </script>
     <script src="/static/js/trends.js"></script>
   </body>

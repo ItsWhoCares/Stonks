@@ -73,7 +73,6 @@ def lookup(symbol):
 
 def Most_active():
     ma = api_key.list()[:9]
-    print(ma)
     return [
         {
             "symbol": ma[0]["symbol"],
@@ -189,6 +188,45 @@ def news(symbol):
         }
     ]
 
+def getOneDayChart(symbol):
+    labels = []
+    data = []
+    chart = {
+        "labels":[],
+        "data":[]
+    }
+    url = f"https://cloud.iexapis.com/stable/stock/{symbol}/intraday-prices/chartIEXOnly=true/?token={IEX_API_KEY}"
+    response = requests.get(url).json()
+    if not response:
+        api_key = 'SAOS0Y8B63XM4DPK'
+        url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=1min&apikey={api_key}"
+        response = requests.get(url).json()["Time Series (1min)"]
+        for label in response["Time Series (1min)"]:
+            labels.append(label.split(" ")[1][:5])
+    
+        for label in response["Time Series (1min)"]:
+            data.append(round(float(response["Time Series (1min)"][label]["4. close"]),2))
+
+        for label in labels:
+            chart["labels"].append(label)
+
+        for dat in data:
+            chart["data"].append(dat)
+        chart["labels"].reverse()
+        chart["data"].reverse()
+        return chart
+
+    for ever_minute in response:
+        if ever_minute["close"] is not None:
+            labels.append(ever_minute["minute"])
+            data.append(ever_minute["close"])
+    chart["labels"] = labels
+    chart["data"] = data
+    return chart
+    
+
+
+
 
 def getTopGainers():
     url = f"https://cloud.iexapis.com/stable/stock/market/list/gainers/?token={IEX_API_KEY}"
@@ -206,7 +244,7 @@ def getTopGainers():
             "52 Week Low": round(stock["week52Low"],2)
         })
 
-    return topGainers[:5]
+    return topGainers
 
 def getTopLosers():
     url = f"https://cloud.iexapis.com/stable/stock/market/list/losers/?token={IEX_API_KEY}"
@@ -224,18 +262,18 @@ def getTopLosers():
             "52 Week Low": round(stock["week52Low"],2)
         })
 
-    return topLosers[:5]
+    return topLosers
 
 
 
-def getTopByLosers():
+def getTopVolume():
     url = f"https://cloud.iexapis.com/stable/stock/market/list/iexvolume/?token={IEX_API_KEY}"
     res = requests.get(url)
     stocks = res.json()
-    topByVolume = []
+    topVolume = []
     for stock in stocks:
         if stock is not None and stock["change"] is not None:
-            topByVolume.append({
+            topVolume.append({
             "Symbol": stock["symbol"],
             "CompanyName": stock["companyName"],
             "LatestPrice": round(stock["latestPrice"],2),
@@ -244,4 +282,4 @@ def getTopByLosers():
             "52 Week Low": round(stock["week52Low"],2)
         })
 
-    return topByVolume[:5]
+    return topVolume

@@ -16,13 +16,43 @@ async function createChart(symbol) {
   });
 }
 
-fetch("/topGainers")
-  .then((response) => response.json())
-  .then((stocks) => {
-    for (var i = 0; i < 6; i++) {
-      if (stocks[i] != null) createChart(stocks[i]["Symbol"]);
-    }
-  });
+function fetchTopGainersChart() {
+  fetch("/getData/topGainers")
+    .then((response) => response.json())
+    .then((stocks) => {
+      for (var i = 0; i < stocks.length; i++) {
+        if (stocks[i] != null) {
+          createChart(stocks[i]["Symbol"]);
+        }
+      }
+    });
+}
+
+function fetchTopLosersChart() {
+  fetch("/getData/topLosers")
+    .then((response) => response.json())
+    .then((stocks) => {
+      for (var i = 0; i < stocks.length; i++) {
+        if (stocks[i] != null) {
+          createChart(stocks[i]["Symbol"]);
+        }
+      }
+    });
+}
+
+function fetchTopVolumeChart() {
+  fetch("/getData/topVolume")
+    .then((response) => response.json())
+    .then((stocks) => {
+      for (var i = 0; i < stocks.length; i++) {
+        if (stocks[i] != null) {
+          createChart(stocks[i]["Symbol"]);
+        }
+      }
+    });
+}
+
+fetchTopGainersChart();
 
 // var ctx = document.getElementById("stock_chart").getContext("2d");
 // const gradient = ctx.createLinearGradient(0, 0, 600, 10);
