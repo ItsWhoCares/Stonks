@@ -375,7 +375,7 @@
                     </svg>
                     <h2 style="font-size: 25px">Market Trends</h2>
                     <div class="Trends">
-                      <h3 class="Chart__option active" id="gainer">
+                      <h3 class="Chart__option active" id="Gainers" onclick="topGainers();">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           style="position: relative; top: 2px"
@@ -395,7 +395,7 @@
                         Top Gainers
                       </h3>
 
-                      <h3 class="Trends__option" id="1m">
+                      <h3 class="Trends__option" id="Losers" onclick="topLosers()">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           style="position: relative; top: 2px"
@@ -412,8 +412,9 @@
                           <path d="M18.7 14.3L15 10.5l-2.7 2.7L7 8" /></svg
                         >Top Lossers
                       </h3>
-                      <h3 class="Trends__option" id="1d">
+                      <h3 class="Trends__option" id="Volume">
                         <svg
+                          onclick="topVolume()"
                           xmlns="http://www.w3.org/2000/svg"
                           style="position: relative; top: 2px; right: 5px"
                           width="24"
@@ -448,6 +449,7 @@
                   <div class="panel__bottom">
                     <div class="panel__stockList">
                       <ul class="panel__list">
+                        <section style="width:inherit;" id="stocks">
                         {% for stock in stocks %}
                         <li>
                           <a href="/stocks/{{stock['Symbol']}}"
@@ -465,7 +467,7 @@
                               ></canvas>
                             </div>
                             
-                            <div class="panel__list-change">
+                            <div class="panel__list-change" style="width: 45px;">
                               <h4>${{stock["LatestPrice"]}}</h4>
                               {% if stock["Change"] is not none and stock["Change"] < 0 %}
                               <h5
@@ -482,9 +484,9 @@
                               <h5 style="color: rgb(102, 249, 218); margin: 5px 0px 0px; text-shadow: rgba(102, 249, 218, 0.5) 0px 0px 7px;">+{{stock["Change"]}}%</h5>
                               {% endif %}
                             </div>
-                            <div class="panel__list-change">
+                            <div class="panel__list-change"  style="width: 45px; margin-right: 50px">
                               <h4 style="color: rgb(102, 249, 218); margin: 5px 0px 0px; text-shadow: rgba(102, 249, 218, 0.5) 0px 0px 7px;">${{stock["52 Week High"]}}</h4>
-                            </div><div class="panel__list-change">
+                            </div><div class="panel__list-change"  style="width: 45px; padding-right: 40px;">
                               <h4 style="
                               color: rgb(244, 84, 133);
                               margin: 5px 0px 0px;
@@ -497,7 +499,9 @@
                           >
                         </li>
                         {% endfor %}
+                      </section>
                       </ul>
+                    
                       <script src="/static/js/MiniChart.js"></script>
                     </div>
 
@@ -513,5 +517,6 @@
       let logout = document.getElementById("logout");
       logout.addEventListener("click", () => (location.href = "/logout"));
     </script>
+    <script src="/static/js/trends.js"></script>
   </body>
 </html>

@@ -10,7 +10,8 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, login_required, lookup, usd, Most_active, is_market_open, get_stock_info, news, getTopGainers
+# from helpers import apology, login_required, lookup, usd, Most_active, is_market_open, get_stock_info, news, getTopGainers
+from helpers import *
 from dbinterface import getBalance, oneYearMonthPrices, isBookmark, getBookmark
 from pyisemail import is_email
 # Configure application
@@ -283,6 +284,8 @@ def OneDayChart(symbol):
     response = requests.get(url)
 
     stock_data = response.json()
+    if "Error Message" in stock_data:
+        return "Error"
     labels = []
     data = []
     chart = {
@@ -378,7 +381,9 @@ def bookmark(symbol):
         return json.dumps("removed")
     return json.dumps("error")
 
-@app.route("/topGainers")
-@login_required
-def topGainers():
-    return getTopGainers()
+# @app.route("getData/<ReqDataType>")
+# @login_required
+# def getData(ReqDataType):
+#     match ReqDataType:
+#         case 
+

@@ -21,6 +21,7 @@ async function getOneDayChart() {
   return new Promise(async function (resolve) {
     var response = await fetch(`/OneDayChart/${symbol}`);
     var res_data = await response.json();
+    // if (res_data == "Error") console.log("Error");
     stock_labels = res_data["labels"];
     stock_data = res_data["data"];
     // console.log(data["labels"]);

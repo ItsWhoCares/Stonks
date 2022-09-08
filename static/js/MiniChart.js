@@ -20,8 +20,7 @@ fetch("/topGainers")
   .then((response) => response.json())
   .then((stocks) => {
     for (var i = 0; i < 6; i++) {
-      createChart(stocks[i]["Symbol"]);
-      console.log(stocks[i]["Symbol"]);
+      if (stocks[i] != null) createChart(stocks[i]["Symbol"]);
     }
   });
 
@@ -47,11 +46,16 @@ var chart;
 async function getOneDayChart(symbol) {
   return new Promise(async function (resolve) {
     var response = await fetch(`/OneDayChart/${symbol}`);
-    var res_data = await response.json();
-    stock_labels = res_data["labels"];
-    stock_data = res_data["data"];
-    // console.log(data["labels"]);
-    resolve();
+    try {
+      var res_data = await response.json();
+      stock_labels = res_data["labels"];
+      stock_data = res_data["data"];
+      resolve();
+    } catch (e) {
+      stock_labels = [];
+      stock_data = [];
+      resolve();
+    }
   });
 }
 

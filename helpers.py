@@ -196,14 +196,52 @@ def getTopGainers():
     stocks = res.json()
     topGainers = []
     for stock in stocks:
-        if stock["change"] is not None:
+        if stock is not None and stock["change"] is not None:
             topGainers.append({
             "Symbol": stock["symbol"],
             "CompanyName": stock["companyName"],
-            "LatestPrice": stock["latestPrice"],
-            "Change": stock["change"],
-            "52 Week High": stock["week52High"],
-            "52 Week Low": stock["week52Low"]
+            "LatestPrice": round(stock["latestPrice"],2),
+            "Change": round(stock["change"],2),
+            "52 Week High": round(stock["week52High"],2),
+            "52 Week Low": round(stock["week52Low"],2)
         })
 
     return topGainers[:5]
+
+def getTopLosers():
+    url = f"https://cloud.iexapis.com/stable/stock/market/list/losers/?token={IEX_API_KEY}"
+    res = requests.get(url)
+    stocks = res.json()
+    topLosers = []
+    for stock in stocks:
+        if stock is not None and stock["change"] is not None:
+            topLosers.append({
+            "Symbol": stock["symbol"],
+            "CompanyName": stock["companyName"],
+            "LatestPrice": round(stock["latestPrice"],2),
+            "Change": round(stock["change"],2),
+            "52 Week High": round(stock["week52High"],2),
+            "52 Week Low": round(stock["week52Low"],2)
+        })
+
+    return topLosers[:5]
+
+
+
+def getTopByLosers():
+    url = f"https://cloud.iexapis.com/stable/stock/market/list/iexvolume/?token={IEX_API_KEY}"
+    res = requests.get(url)
+    stocks = res.json()
+    topByVolume = []
+    for stock in stocks:
+        if stock is not None and stock["change"] is not None:
+            topByVolume.append({
+            "Symbol": stock["symbol"],
+            "CompanyName": stock["companyName"],
+            "LatestPrice": round(stock["latestPrice"],2),
+            "Change": round(stock["change"],2),
+            "52 Week High": round(stock["week52High"],2),
+            "52 Week Low": round(stock["week52Low"],2)
+        })
+
+    return topByVolume[:5]

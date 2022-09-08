@@ -1,3 +1,4 @@
+python == 3.10.7
 asttokens==2.0.7
 backcall==0.2.0
 cachelib==0.9.0
