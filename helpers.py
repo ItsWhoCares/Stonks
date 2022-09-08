@@ -73,6 +73,8 @@ def lookup(symbol):
 
 def Most_active():
     ma = api_key.list()[:9]
+    if not ma:
+        return None
     return [
         {
             "symbol": ma[0]["symbol"],

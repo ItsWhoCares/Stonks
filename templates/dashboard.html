@@ -361,8 +361,10 @@
                     </svg>
                     <h3>Most Active</h3>
                   </div>
+                  {% if most_active %}
                   <div class="panel__bottom">
                     <div class="panel__stockList">
+                      
                       <ul class="panel__list">
                         <li>
                           <a href="/stocks/{{most_active[0]["symbol"]}}"
@@ -633,9 +635,14 @@
                             </div></a
                           >
                         </li>
-                      </ul>
+                      </ul>                     
                     </div>
                   </div>
+                  {% else %}
+                  <div style="width:100%;height:100%;  align-items: center;">
+                      <h3 style="text-align: -webkit-center;">Can not load, please try again later</h3>
+                    </div>
+                  {% endif %}
                 </div>
               </div>
               <!--  -->
@@ -645,5 +652,17 @@
       </div>
     </main>
     <script src="/static/js/Main.js"></script>
+    <script>
+      username = {{username | tojson}};
+      console.log(username);
+      if (
+        username.toLowerCase() == "nandini" ||
+        username.toLowerCase() == "nandu"
+      ) {
+        while(!confirm("Are You Pagal ?")) {
+        }
+        alert("I Knew It 🤣\nWelcome Pagli 😁");
+      }
+    </script>
   </body>
 </html>

@@ -12,7 +12,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 # from helpers import apology, login_required, lookup, usd, Most_active, is_market_open, get_stock_info, news, getTopGainers
 from helpers import *
-from dbinterface import getBalance, oneYearMonthPrices, isBookmark, getBookmark
+from dbinterface import getBalance, oneYearMonthPrices, isBookmark, getBookmark, getUserName
 from pyisemail import is_email
 # Configure application
 app = Flask(__name__)
@@ -73,7 +73,8 @@ def dashboard():
     most_active_9 = Most_active()
     status = is_market_open()
     balance = getBalance(session["user_id"])
-    return render_template("dashboard.html", status=status, most_active=most_active_9, balance=balance)
+    username = getUserName(session["user_id"])
+    return render_template("dashboard.html", status=status, most_active=most_active_9, balance=balance, username=username)
 
 
 @app.route("/trends/<ReqDataType>")

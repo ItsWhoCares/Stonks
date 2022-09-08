@@ -35,6 +35,12 @@ def getall():
         data.append(dict(row))
     return data
 
+def getUserName(id):
+    cur.execute("SELECT username FROM users WHERE id=%s", (id,))
+    res = getone()["username"]
+    return res
+
+
 #Returns account balance
 def getBalance(id):
     cur.execute("SELECT balance FROM users WHERE id=%s",(id,))
