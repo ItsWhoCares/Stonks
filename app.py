@@ -12,7 +12,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 # from helpers import apology, login_required, lookup, usd, Most_active, is_market_open, get_stock_info, news, getTopGainers
 from helpers import *
-from dbinterface import getBalance, oneYearMonthPrices, isBookmark, getBookmark, getUserName
+from dbinterface import *
 from pyisemail import is_email
 # Configure application
 app = Flask(__name__)
@@ -72,16 +72,19 @@ def index():
 def dashboard():
     most_active_9 = Most_active()
     status = is_market_open()
-    balance = getBalance(session["user_id"])
+    balance = getBalancef(session["user_id"])
     username = getUserName(session["user_id"])
-    return render_template("dashboard.html", status=status, most_active=most_active_9, balance=balance, username=username)
+    if username.upper() == "NANDINI" or username.upper() == "NANDU":
+        return render_template("specialdash.html", status=status, most_active=most_active_9, balance=balance)
+
+    return render_template("dashboard.html", status=status, most_active=most_active_9, balance=balance)
 
 
 @app.route("/trends/<ReqDataType>")
 @login_required
 def trends(ReqDataType):
     status = is_market_open()
-    balance = getBalance(session["user_id"])
+    balance = getBalancef(session["user_id"])
     stocks = getTopGainers()
     match ReqDataType:
         case "topGainers":
@@ -98,7 +101,7 @@ def trends(ReqDataType):
 def stocks(stock_symbol):
     status = is_market_open()
     key_info = get_stock_info(stock_symbol)
-    balance = getBalance(session["user_id"])
+    balance = getBalancef(session["user_id"])
     if isnews:
         articles = fetch_news(stock_symbol)
     else:
@@ -110,48 +113,6 @@ def stocks(stock_symbol):
 def latest_price(stock_symbol):
     price = get_stock_info(stock_symbol)
     return str(price["LatestPrice"])
-
-
-@app.route("/buy", methods=["GET", "POST"])
-@login_required
-def buy():
-    """Buy shares of stock"""
-    row = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
-    balance = row[0]["cash"]
-
-    if(request.method == "POST"):
-        symbol = request.form.get("symbol")
-        shares = request.form.get("shares")
-        stock = lookup(symbol)
-        if(not stock):
-            return apology("Invalid Symbol")
-
-        bill = float(stock["price"] * float(shares))
-        id = session["user_id"]
-
-
-
-        if((balance - bill) < 0):
-            return apology("Insufficient Balance")
-
-        balance = balance - bill
-        db.execute("UPDATE users SET cash = ? WHERE id = ?", balance, session["user_id"])
-        db.execute("INSERT INTO transactions VALUES (?,?,?,?)", session["user_id"], symbol, shares, stock["price"])
-        row = db.execute("SELECT * FROM portfolio WHERE id = ? AND symbol = ?", session["user_id"], symbol)
-        if(len(row) == 0):
-            db.execute("INSERT INTO portfolio VALUES (?,?,?)", session["user_id"], symbol, shares)
-        db.execute("UPDATE portfolio SET shares = shares + ? WHERE id = ? AND symbol = ?", id, symbol, shares)
-
-        return render_template("buy.html", done="Done", balance=balance)
-
-    return render_template("buy.html", balance=balance)
-
-
-@app.route("/history")
-@login_required
-def history():
-    """Show history of transactions"""
-    return apology("TODO")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -192,14 +153,17 @@ def login():
 @app.route("/portfolio")
 @login_required
 def portfolio():
-    return render_template("portfolio.html")
+    status = is_market_open()
+    balance = getBalancef(session["user_id"])
+    stocks = getPortfolio(session["user_id"])
+    return render_template("portfolio.html", status=status, balance=balance, stocks=stocks)
 
 @app.route("/watchlist")
 @login_required
 def watchlist():
     bookmarks = getBookmark(session["user_id"])
     status = is_market_open()
-    balance = getBalance(session["user_id"])
+    balance = getBalancef(session["user_id"])
     return render_template("watchlist.html", status=status, balance=balance, bookmarks=bookmarks)
 
 @app.route("/logout")
@@ -372,7 +336,60 @@ def getData(ReqDataType):
         case "topLosers":
             return getTopLosers()
         case "topVolume":
-            print(getTopVolume)
             return getTopVolume()
+        case "balance":
+            return {"balance": getBalancef(session["user_id"])}
     return "Error"
 
+# @app.route("/getData/balance")
+# @login_required
+# def getbalance():
+#     return {
+#         "balance": getBalancef(session["user_id"])
+#     }
+
+@app.route("/buyStock/<symbol>/<quantity>")
+@login_required
+def buyStock(symbol, quantity):
+    # if(not is_market_open()):
+    #     return{
+    #         "status": "Failure",
+    #         "errorMsg": "Market is closed"
+    #     }
+    stockPrice = get_stock_price(symbol, 4)
+    bill = round(stockPrice * float(quantity))
+    if canBuy(bill, session["user_id"]):
+        makeBuyTransaction(session["user_id"], symbol.upper(), stockPrice, quantity)
+        cur.execute("COMMIT;")
+        return {
+        "status": "Success"
+        }
+    return {
+        "status": "Failure",
+        "errorMsg": "Insufficient Balance"
+    }
+@app.route("/sellStock/<symbol>/<tid>")
+@login_required
+def sellStock(symbol, tid):
+    stockPrice = get_stock_price(symbol, 4)
+    if canSell(session["user_id"], symbol.upper(), tid):
+        makeSellTransaction(session["user_id"], tid, stockPrice)
+        return {
+        "status": "Success"
+        }
+    return {
+        "status": "Failure"
+    }
+    
+    
+    
+@app.route("/addCredits")
+@login_required
+def addCredits():
+    if not credit(session["user_id"], 10000):
+        return {
+            "msg": "Arre bas kar pagli" 
+        }
+    return {
+        "msg": "Error"
+    }

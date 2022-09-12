@@ -89,6 +89,19 @@
     <main id="root">
       <div class="container">
         <section class="stock">
+          <!--  -->
+          <div class="black-bg" id="blackbg" style="display:none"></div>
+          <div class="buyConfirmation" id="confirmbox" style="display:none">
+             <!--<h3>
+              Are you sure you want to buy 10 shares of {{key_info["Symbol"]}} for
+              <span style="font-weight: bold">128.8</span> dollars
+            </h3> -->
+            <div>
+              <button class="stockPage__buy-button">CONFIRM</button
+              ><button class="stockPage__buy-button cancel">CANCEL</button>
+            </div>
+          </div>
+          <!--  -->
           <div style="display: flex; height: 100%">
             <aside class="leftbar">
               <svg
@@ -357,7 +370,7 @@
                               ></path>
                             </g>
                           </svg>
-                          <h3>{{balance}}</h3>
+                          <h3 id="balance">{{balance}}</h3>
                         </div></a
                       >
                     </div>
@@ -439,9 +452,9 @@
                       autocapitalize="off"
                       spellcheck="false"
                       class="stockPage__buy-input"
-                      id="buy-input"
+                      id="buy_input"
                       type="number"
-                    /><button class="stockPage__buy-button">BUY</button>
+                    /><button class="stockPage__buy-button" onclick="buyConfirm('{{key_info["Symbol"]}}');">BUY</button>
                   </div>
                 </div>
               </div>
@@ -572,6 +585,7 @@
                       {% else %}
                       <div class="news__nothing"><svg enable-background="new 0 0 512 512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><g><path d="m60 272h332v-152h-332zm30-122h272v92h-272z"></path><path d="m60 302h151v30h-151z"></path><path d="m60 362h151v30h-151z"></path><path d="m241 452h151v-150h-151zm30-120h91v90h-91z"></path><path d="m60 422h151v30h-151z"></path><path d="m60 0v60h-60v407c0 24.813 20.187 45 45 45h421.979c.172 0 .345-.001.518-.003 24.584-.268 44.503-20.351 44.503-44.997v-467zm-15 482c-8.271 0-15-6.729-15-15v-377h392v377c0 5.197.87 10.251 2.543 15zm437-15c0 8.174-6.571 14.841-14.708 14.997-4.094.084-7.857-1.43-10.75-4.244-2.929-2.85-4.542-6.669-4.542-10.753v-407h-362v-30h392z"></path></g></svg><h3>Sorry, we couldn't find any related news.</h3></div>
                       {% endif %}
+                      
                   </div>
                 </div>
               </div>
@@ -581,15 +595,27 @@
       </div>
     </main>
     <script src="/static/js/Main.js"></script>
+    <script src="/static/js/Buy.js"></script>
+
     <script>
       let latestprice = document.getElementById("latestprice");
       let stock_symbol = window.location.href.split("/").pop();
 
       //update latest price
-      function get_price(){
-        fetch(`/latest_price/${symbol}`)
+      async function get_price(){
+        let stockPrice;
+        await fetch(`/latest_price/${symbol}`)
           .then((response) => response.json())
-            .then((data) => latestprice.innerHTML = "$" + data);
+            .then((data) => {
+              latestprice.innerHTML = "$" + data;
+              stockPrice = parseFloat(data);
+          });
+        if(confirmbox.style.display != "none")
+        {
+          let quantity = parseInt(buy_input.value);
+          let value = Math.round(quantity * stockPrice * 100)/100;
+          confirmboxvalue.innerHTML = `${value}`;
+        }
       }
 
       //market status
@@ -598,8 +624,8 @@
       //console.log(true);
       //disable buying when market is closed
       if(status == "false"){
-        document.getElementById("buy-input").disabled = true;
-        document.getElementById("buy-input").placeholder = "MARKET CLOSED";
+        //document.getElementById("buy_input").disabled = true;
+        //document.getElementById("buy_input").placeholder = "MARKET CLOSED";
       }
 
       //initail latest price
@@ -643,8 +669,8 @@
         {
           get_price();
         }
-      }, 100000);
+      }, 10000);
     </script>
-    
+    <script src="/static/js/Buy.js"></script>
   </body>
 </html>

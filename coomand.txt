@@ -1,0 +1,4 @@
+set DATABASE_URL=postgres://twdikzwuzszyyc:a12529e5918a448af6e6eb578f069dd7d9f6c0a8c52592f35561759963906352@ec2-52-72-99-110.compute-1.amazonaws.com:5432/d83sl6bsf5s9sc
+set IEX_API_KEY=pk_0018880029264c478d3755567077d58a
+set FLASK_DEBUG=true
+python -m flask run

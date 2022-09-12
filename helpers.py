@@ -138,6 +138,8 @@ def is_market_open():
     status = api_key.quote('aapl')
     return status["isUSMarketOpen"]
 
+def get_stock_price(symbol,n):
+    return round(api_key.quote(symbol)["latestPrice"], n)
 
 def get_stock_info(symbol):
     stock_info = api_key.quote(symbol)
@@ -246,7 +248,7 @@ def getTopGainers():
             "52 Week Low": round(stock["week52Low"],2)
         })
 
-    return topGainers
+    return topGainers[:7]
 
 def getTopLosers():
     url = f"https://cloud.iexapis.com/stable/stock/market/list/losers/?token={IEX_API_KEY}"
@@ -264,7 +266,7 @@ def getTopLosers():
             "52 Week Low": round(stock["week52Low"],2)
         })
 
-    return topLosers
+    return topLosers[:7]
 
 
 
@@ -284,4 +286,4 @@ def getTopVolume():
             "52 Week Low": round(stock["week52Low"],2)
         })
 
-    return topVolume
+    return topVolume[:7]

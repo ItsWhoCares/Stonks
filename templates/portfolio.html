@@ -21,6 +21,7 @@
     <link href="/static/dashboard.css" rel="stylesheet" />
     <link href="/static/topbar.css" rel="stylesheet" />
     <link href="/static/css/portfolio.css" rel="stylesheet" />
+    <link href="/static/stocks.css" rel="stylesheet" />
     <title>StalkStock - Portfolio</title>
     <!-- <link href="/static/css/main.41b99ec9.chunk.css" rel="stylesheet" /> -->
     <style type="text/css">
@@ -357,14 +358,61 @@
                             ></path>
                           </g>
                         </svg>
-                        <h3>$100,000</h3>
+                        <h3 id="balance">{{balance}}</h3>
                       </div></a
                     >
                   </div>
                 </div>
               </div>
             </nav>
+            {% if not stocks %}
             <div class="errorMsg">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <g>
+                  <path fill="none" d="M0 0h24v24H0z"></path>
+                  <path
+                    d="M5.373 4.51A9.962 9.962 0 0 1 12 2c5.523 0 10 4.477 10 10a9.954 9.954 0 0 1-1.793 5.715L17.5 12H20A8 8 0 0 0 6.274 6.413l-.9-1.902zm13.254 14.98A9.962 9.962 0 0 1 12 22C6.477 22 2 17.523 2 12c0-2.125.663-4.095 1.793-5.715L6.5 12H4a8 8 0 0 0 13.726 5.587l.9 1.902zm-5.213-4.662L10.586 12l-2.829 2.828-1.414-1.414 4.243-4.242L13.414 12l2.829-2.828 1.414 1.414-4.243 4.242z"
+                  ></path>
+                </g>
+              </svg>
+              <h3>You didn't buy any stocks yet.</h3>
+            </div>
+            {% else %}
+            <table class="portfolio__list" id="bookmarkstable">
+              <tbody>
+                <tr>
+                  <th>SYMBOL</th>
+                  <th>QUANTITY</th>
+                  <th></th>
+                  <th>GAIN/LOSS ($)</th>
+                  <th>CURRENT VALUE</th>
+                  <th></th>
+                </tr>
+                {% for stock in stocks %}
+                <tr>
+                  <td>
+                    <a href="/stocks/{{stock['Symbol']}}"
+                      >{{stock["Symbol"]}}</a
+                    >
+                  </td>
+                  <td>{{stock["Quantity"]}}</td>
+                  {% if not stock["ChangeSign"]%}
+                  <td style="color: rgb(244, 83, 133)"></td>
+                  <td style="color: rgb(244, 83, 133)">-{{stock["Change"]}}</td>
+                  {% else %}
+                  <td style="color: rgb(102, 249, 218)"></td>
+                  <td style="color: rgb(102, 249, 218)">
+                    +{{stock["Change"]}}
+                  </td>
+                  {% endif %}
+                  <td>${{stock["CurrentValue"]}}</td>
+                  <td><button class="stockPage__sell-button" onclick="sellStock('{{stock["Symbol"]}}', {{stock["tid"]}}); deleteRow(this)">SELL</button></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% endif %}
+            <div class="errorMsg" id="error" style="display: none">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g>
                   <path fill="none" d="M0 0h24v24H0z"></path>
@@ -379,99 +427,7 @@
         </div>
       </div>
     </main>
-    <script>
-      !(function (e) {
-        function r(r) {
-          for (
-            var n, l, a = r[0], f = r[1], i = r[2], c = 0, s = [];
-            c < a.length;
-            c++
-          )
-            (l = a[c]),
-              Object.prototype.hasOwnProperty.call(o, l) &&
-                o[l] &&
-                s.push(o[l][0]),
-              (o[l] = 0);
-          for (n in f)
-            Object.prototype.hasOwnProperty.call(f, n) && (e[n] = f[n]);
-          for (p && p(r); s.length; ) s.shift()();
-          return u.push.apply(u, i || []), t();
-        }
-        function t() {
-          for (var e, r = 0; r < u.length; r++) {
-            for (var t = u[r], n = !0, a = 1; a < t.length; a++) {
-              var f = t[a];
-              0 !== o[f] && (n = !1);
-            }
-            n && (u.splice(r--, 1), (e = l((l.s = t[0]))));
-          }
-          return e;
-        }
-        var n = {},
-          o = { 1: 0 },
-          u = [];
-        function l(r) {
-          if (n[r]) return n[r].exports;
-          var t = (n[r] = { i: r, l: !1, exports: {} });
-          return e[r].call(t.exports, t, t.exports, l), (t.l = !0), t.exports;
-        }
-        (l.m = e),
-          (l.c = n),
-          (l.d = function (e, r, t) {
-            l.o(e, r) ||
-              Object.defineProperty(e, r, { enumerable: !0, get: t });
-          }),
-          (l.r = function (e) {
-            "undefined" != typeof Symbol &&
-              Symbol.toStringTag &&
-              Object.defineProperty(e, Symbol.toStringTag, { value: "Module" }),
-              Object.defineProperty(e, "__esModule", { value: !0 });
-          }),
-          (l.t = function (e, r) {
-            if ((1 & r && (e = l(e)), 8 & r)) return e;
-            if (4 & r && "object" == typeof e && e && e.__esModule) return e;
-            var t = Object.create(null);
-            if (
-              (l.r(t),
-              Object.defineProperty(t, "default", { enumerable: !0, value: e }),
-              2 & r && "string" != typeof e)
-            )
-              for (var n in e)
-                l.d(
-                  t,
-                  n,
-                  function (r) {
-                    return e[r];
-                  }.bind(null, n)
-                );
-            return t;
-          }),
-          (l.n = function (e) {
-            var r =
-              e && e.__esModule
-                ? function () {
-                    return e.default;
-                  }
-                : function () {
-                    return e;
-                  };
-            return l.d(r, "a", r), r;
-          }),
-          (l.o = function (e, r) {
-            return Object.prototype.hasOwnProperty.call(e, r);
-          }),
-          (l.p = "/");
-        var a = (this.webpackJsonpTrader24 = this.webpackJsonpTrader24 || []),
-          f = a.push.bind(a);
-        (a.push = r), (a = a.slice());
-        for (var i = 0; i < a.length; i++) r(a[i]);
-        var p = f;
-        t();
-      })([]);
-    </script>
-    <script>
-      let logout = document.getElementById("logout");
-      logout.addEventListener("click", () => (location.href = "/logout"));
-    </script>
+    <script src="/static/js/Main.js"></script>
+    <script src="/static/js/Sell.js"></script>
   </body>
 </html>

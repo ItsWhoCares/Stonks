@@ -408,7 +408,7 @@
                   <td>${{stock["LatestPrice"]}}</td>
                   <td>
                     <svg
-                      onclick="deleteRow(this, `{{stock['Symbol']}}`)"
+                      onclick="deleteBookmark(this, `{{stock['Symbol']}}`)"
                       id="bookmark"
                       xmlns="http://www.w3.org/2000/svg"
                       width="25"
@@ -447,19 +447,7 @@
         </div>
       </div>
     </main>
-    <script>
-      async function deleteRow(r, symbol) {
-        var i = r.parentNode.parentNode.rowIndex;
-        table = document.getElementById("bookmarkstable");
-        table.deleteRow(i);
-        if (table.rows.length - 1 == 0) {
-          table.remove();
-          document.getElementById("error").style.display = null;
-          //location.reload();
-        }
-        await fetch(`/bookmark/${symbol}`);
-      }
-    </script>
+    <script src="/static/js/Main.js"></script>
     <!-- <script>
       !(function (e) {
         function r(r) {

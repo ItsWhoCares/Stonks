@@ -24,6 +24,7 @@
     <link href="/static/login_register.css" rel="stylesheet" />
     <link href="/static/dashboard.css" rel="stylesheet" />
     <link href="/static/topbar.css" rel="stylesheet" />
+    <link href="/static/stocks.css" rel="stylesheet" />
     <!-- <link href="/static/css/main.41b99ec9.chunk.css" rel="stylesheet"> -->
   </head>
   <body>
@@ -32,6 +33,19 @@
       <div class="container">
         <section class="Dashboard" id="dashboard">
           <div></div>
+          <div class="black-bg" id="blackbg"></div>
+          <div class="buyConfirmation" id="confirmbox" style="height: 75%; width: 40%;">
+            <h3>Hi Pagli 🖐️,<h3>
+                <h3 style="padding: 20px;">I have added a new feature just for you, a new button on top right corner when it's pressed it adds $10,000 credits to your account</h3>
+                <h3>Why you ask ?</h3>
+                <h3 style="padding: 20px;">Because I care 😌🤭 and because you will lose all your credits if i didn't. 🙂</h3>
+                <h3>Don't you agree you are pagal ?</h3>
+            <div>
+              <button class="stockPage__buy-button" onclick="blackbg.style = 'display: none';
+              confirmbox.style = 'display: none';">YES I AGREE, I'AM PAGAL</button
+              >
+            </div>
+          </div>
           <div style="display: flex; flex-direction: column; width: 100%">
             <div style="display: flex; height: 100%">
               <aside class="leftbar">
@@ -285,6 +299,17 @@
                     </div>
                     <div class="topbar__container">
                       <div class="topbar__user">
+
+
+                        <a href="javascript:addCredit();"
+                          ><div class="topbar__power">
+                            
+                            <h3>NOICE</h3>
+                          </div></a
+                        >
+
+
+
                         <a href="/portfolio"
                           ><div class="topbar__power">
                             <svg
@@ -298,7 +323,7 @@
                                 ></path>
                               </g>
                             </svg>
-                            <h3>{{balance}}</h3>
+                            <h3 id="balance">{{balance}}</h3>
                           </div></a
                         >
                       </div>
@@ -652,5 +677,6 @@
       </div>
     </main>
     <script src="/static/js/Main.js"></script>
+    <script src="/static/js/Special.js"></script>
   </body>
 </html>
