@@ -51,7 +51,7 @@ c = p.Client(api_token=IEX_API_KEY)
 api_key_two = IEX_API_KEY
 
 #is news on
-isnews = False
+# isnews = False
 
 @app.after_request
 def after_request(response):
@@ -73,8 +73,7 @@ def dashboard():
     most_active_9 = Most_active()
     status = is_market_open()
     balance = getBalancef(session["user_id"])
-    username = getUserName(session["user_id"])
-    if username.upper() == "NANDINI" or username.upper() == "NANDU":
+    if session["user_id"] == 12:
         return render_template("specialdash.html", status=status, most_active=most_active_9, balance=balance)
 
     return render_template("dashboard.html", status=status, most_active=most_active_9, balance=balance)
@@ -102,10 +101,7 @@ def stocks(stock_symbol):
     status = is_market_open()
     key_info = get_stock_info(stock_symbol)
     balance = getBalancef(session["user_id"])
-    if isnews:
-        articles = fetch_news(stock_symbol)
-    else:
-        articles = None
+    articles = news(stock_symbol)
     isbookmarked = isBookmark(session["user_id"], stock_symbol)
     return render_template("stocks.html", status=status, key_info=key_info, articles=articles, balance=balance, isbookmarked=isbookmarked)
 
@@ -202,8 +198,6 @@ def quote():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
-
-
     if(request.method == "POST"):
         username = request.form.get("username")
         email = request.form.get("email")
@@ -371,6 +365,11 @@ def buyStock(symbol, quantity):
 @app.route("/sellStock/<symbol>/<tid>")
 @login_required
 def sellStock(symbol, tid):
+    # if(not is_market_open()):
+    #     return{
+    #         "status": "Failure",
+    #         "errorMsg": "Market is closed"
+    #     }
     stockPrice = get_stock_price(symbol, 4)
     if canSell(session["user_id"], symbol.upper(), tid):
         makeSellTransaction(session["user_id"], tid, stockPrice)

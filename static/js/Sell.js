@@ -1,12 +1,12 @@
-function sellStock(symbol, tid) {
+function sellStock(symbol, tid, r) {
   fetch(`/sellStock/${symbol}/${tid}`)
     .then((Response) => Response.json())
     .then((res) => {
       if (res["status"] == "Failure") {
-        alert(`Could not sell stock (${symbol})`);
-        console.log(res);
+        errorPopup.style = null;
       } else {
         updateBalance();
+        deleteRow(r);
       }
     });
 }

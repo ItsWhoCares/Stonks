@@ -13,9 +13,15 @@ if not os.environ.get('IEX_API_KEY'):
     raise RuntimeError('IEX_API_KEY NOT SET')
 IEX_API_KEY = os.environ['IEX_API_KEY']
 
+if not os.environ.get('NEWS_API_KEY'):
+    raise RuntimeError('NEWS_API_KEY NOT SET')
+NEWS_API_KEY = os.environ['NEWS_API_KEY']
+
+
 api_one = p.Client(api_token='sk_bdf4a921914e4977b60e9b40fc9f1b3e') #whocares
 api_two = p.Client(api_token='pk_13bea402dd284dd994c2a87b076d4d9f')#cities
 
+news_key = p.Client(api_token=NEWS_API_KEY)
 api_key = p.Client(api_token=IEX_API_KEY)
 
 def apology(message, code=400):
@@ -47,28 +53,28 @@ def login_required(f):
     return decorated_function
 
 
-def lookup(symbol):
-    """Look up quote for symbol."""
+# def lookup(symbol):
+#     """Look up quote for symbol."""
 
-    # Contact API
-    try:
-        api_key = pk_a8218b82cc0b4e929be5cb4a3795e82c
-        url = f"https://cloud.iexapis.com/stable/stock/{urllib.parse.quote_plus(symbol)}/quote?token={api_key}"
-        response = requests.get(url)
-        response.raise_for_status()
-    except requests.RequestException:
-        return None
+#     # Contact API
+#     try:
+#         api_key = pk_a8218b82cc0b4e929be5cb4a3795e82c
+#         url = f"https://cloud.iexapis.com/stable/stock/{urllib.parse.quote_plus(symbol)}/quote?token={api_key}"
+#         response = requests.get(url)
+#         response.raise_for_status()
+#     except requests.RequestException:
+#         return None
 
-    # Parse response
-    try:
-        quote = response.json()
-        return {
-            "name": quote["companyName"],
-            "price": float(quote["latestPrice"]),
-            "symbol": quote["symbol"]
-        }
-    except (KeyError, TypeError, ValueError):
-        return None
+#     # Parse response
+#     try:
+#         quote = response.json()
+#         return {
+#             "name": quote["companyName"],
+#             "price": float(quote["latestPrice"]),
+#             "symbol": quote["symbol"]
+#         }
+#     except (KeyError, TypeError, ValueError):
+#         return None
 
 
 def Most_active():
@@ -167,31 +173,34 @@ def usd(value):
 
 
 def news(symbol):
-    articles = api_key.news(symbol)[:3]
-    return [
-        {
-            "Date": datetime.datetime.fromtimestamp(articles[0]["datetime"]/1000).strftime("%B %d"),
-            "ImageUrl": articles[0]["image"],
-            "Headline": articles[0]["headline"],
-            "Summary": articles[0]["summary"][0:120],
-            "Url": articles[0]["url"]
-        },
-        {
-            "Date": datetime.datetime.fromtimestamp(articles[1]["datetime"]/1000).strftime("%B %d"),
-            "ImageUrl": articles[1]["image"],
-            "Headline": articles[1]["headline"],
-            "Summary": articles[1]["summary"][0:120],
-            "Url": articles[1]["url"]
-        },
-        {
-            "Date": datetime.datetime.fromtimestamp(articles[2]["datetime"]/1000).strftime("%B %d"),
-            "ImageUrl": articles[2]["image"],
-            "Headline": articles[2]["headline"],
-            "Summary": articles[2]["summary"][0:120],
-            "Url": articles[2]["url"]
-        }
-    ]
+    try:
+        articles = news_key.news(symbol)[:3]
+        return [
+            {
+                "Date": datetime.datetime.fromtimestamp(articles[0]["datetime"]/1000).strftime("%B %d"),
+                "ImageUrl": articles[0]["image"],
+                "Headline": articles[0]["headline"],
+                "Summary": articles[0]["summary"][0:120],
+                "Url": articles[0]["url"]
+            },
+            {
+                "Date": datetime.datetime.fromtimestamp(articles[1]["datetime"]/1000).strftime("%B %d"),
+                "ImageUrl": articles[1]["image"],
+                "Headline": articles[1]["headline"],
+                "Summary": articles[1]["summary"][0:120],
+                "Url": articles[1]["url"]
+            },
+            {
+                "Date": datetime.datetime.fromtimestamp(articles[2]["datetime"]/1000).strftime("%B %d"),
+                "ImageUrl": articles[2]["image"],
+                "Headline": articles[2]["headline"],
+                "Summary": articles[2]["summary"][0:120],
+                "Url": articles[2]["url"]
+            }
+        ]
 
+    except:
+        return None
 def getOneDayChart(symbol):
     labels = []
     data = []

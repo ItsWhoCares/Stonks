@@ -84,6 +84,7 @@
     <main id="root">
       <div class="container">
         <div class="portfolio">
+          <div class="alertMessage" id="errorPopup" style="display:none;">Market is currently closed <button class="stockPage__buy-button" style="margin: 20px;" onclick="errorPopup.style = 'display:none';">CONFIRM</button></div>
           <aside class="leftbar">
             <svg
               class="leftbar__logo"
@@ -117,7 +118,7 @@
                   </svg></li
               ></a>
 
-              <a href="/trends">
+              <a href="/trends/topGainers">
                 <li>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -406,7 +407,7 @@
                   </td>
                   {% endif %}
                   <td>${{stock["CurrentValue"]}}</td>
-                  <td><button class="stockPage__sell-button" onclick="sellStock('{{stock["Symbol"]}}', {{stock["tid"]}}); deleteRow(this)">SELL</button></td>
+                  <td><button class="stockPage__sell-button" onclick="sellStock('{{stock["Symbol"]}}', {{stock["tid"]}}, this);">SELL</button></td>
                 </tr>
                 {% endfor %}
               </tbody>
