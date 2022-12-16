@@ -187,3 +187,11 @@ def credit(id, amount):
     cur.execute("UPDATE users SET balance=%s WHERE id=%s", (newbalance, id))
     cur.execute("COMMIT;")
     return True
+
+#print the names of all the tables in the database
+def printTables():
+    cur.execute("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'")
+    res = getall()
+    for row in res:
+        print(row["table_name"])
+        
