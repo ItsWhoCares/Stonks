@@ -70,6 +70,7 @@ def index():
 @app.route("/dashboard")
 @login_required
 def dashboard():
+    printTables()
     most_active_9 = Most_active()
     status = is_market_open()
     balance = getBalancef(session["user_id"])
@@ -392,3 +393,16 @@ def addCredits():
     return {
         "msg": "Error"
     }
+    
+@app.route("/getmybalance")
+@login_required
+def getmybalance():
+    return {
+        "balance": getBalancef(session["user_id"])
+    }
+    
+@app.route("/getmytransactions")
+@login_required
+def getmytransactions():
+    cur.execute("SELECT * FROM transactions WHERE id=%s;", (session["user_id"],))
+    return getall()
