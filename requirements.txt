@@ -11,3 +11,4 @@ numerize==0.12
 
 pyEX==0.5.0
 
+pyIsEmail==1.4.0
