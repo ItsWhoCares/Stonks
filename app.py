@@ -64,6 +64,11 @@ def after_request(response):
 
 @app.route("/")
 def index():
+    if not os.environ.get('DATABASE_URL'):
+        raise RuntimeError("DATABASE_URL NOT SET")
+    DATABASE_URL = os.environ['DATABASE_URL']
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     """Show portfolio of stocks"""
     return render_template("index.html")
 
