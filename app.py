@@ -9,6 +9,7 @@ from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
+from functools import wraps
 
 # from helpers import apology, login_required, lookup, usd, Most_active, is_market_open, get_stock_info, news, getTopGainers
 from helpers import *
@@ -53,6 +54,26 @@ api_key_two = IEX_API_KEY
 #is news on
 # isnews = False
 
+def db_con(f):
+    """
+    Decorate routes to require login.
+    https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not os.environ.get('DATABASE_URL'):
+            raise RuntimeError("DATABASE_URL NOT SET")
+        try:
+            cur.execute("SELECT * FROM users")
+            cur.fetchone()
+        except:
+            DATABASE_URL = os.environ['DATABASE_URL']
+            conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+            cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 @app.after_request
 def after_request(response):
     """Ensure responses aren't cached"""
@@ -74,6 +95,7 @@ def index():
 
 @app.route("/dashboard")
 @login_required
+@db_con
 def dashboard():
     printTables()
     most_active_9 = Most_active()
@@ -87,6 +109,7 @@ def dashboard():
 
 @app.route("/trends/<ReqDataType>")
 @login_required
+@db_con
 def trends(ReqDataType):
     status = is_market_open()
     balance = getBalancef(session["user_id"])
@@ -103,6 +126,7 @@ def trends(ReqDataType):
 
 @app.route("/stocks/<stock_symbol>", methods=["GET","POST"])
 @login_required
+@db_con
 def stocks(stock_symbol):
     status = is_market_open()
     key_info = get_stock_info(stock_symbol)
@@ -118,6 +142,7 @@ def latest_price(stock_symbol):
 
 
 @app.route("/login", methods=["GET", "POST"])
+@db_con
 def login():
     """Log user in"""
 
@@ -154,6 +179,7 @@ def login():
 
 @app.route("/portfolio")
 @login_required
+@db_con
 def portfolio():
     status = is_market_open()
     balance = getBalancef(session["user_id"])
@@ -162,6 +188,7 @@ def portfolio():
 
 @app.route("/watchlist")
 @login_required
+@db_con
 def watchlist():
     bookmarks = getBookmark(session["user_id"])
     status = is_market_open()
@@ -169,6 +196,7 @@ def watchlist():
     return render_template("watchlist.html", status=status, balance=balance, bookmarks=bookmarks)
 
 @app.route("/logout")
+@db_con
 def logout():
     """Log user out"""
 
@@ -181,6 +209,7 @@ def logout():
 
 @app.route("/quote", methods=["GET", "POST"])
 @login_required
+@db_con
 def quote():
     """Get stock quote."""
 
@@ -202,6 +231,7 @@ def quote():
 
 
 @app.route("/register", methods=["GET", "POST"])
+@db_con
 def register():
     """Register user"""
     if(request.method == "POST"):
@@ -243,6 +273,7 @@ def register():
 
 @app.route("/sell", methods=["GET", "POST"])
 @login_required
+@db_con
 def sell():
     """Sell shares of stock"""
     return apology("TODO")
@@ -313,6 +344,7 @@ def getall():
 
 @app.route("/bookmark/<symbol>", methods=["GET"])
 @login_required
+@db_con
 def bookmark(symbol):
     cur.execute("SELECT * FROM watchlist WHERE id=%s AND symbol=%s;",(session["user_id"],symbol.upper()))
     res = getone()
@@ -350,6 +382,7 @@ def getData(ReqDataType):
 
 @app.route("/buyStock/<symbol>/<quantity>")
 @login_required
+@db_con
 def buyStock(symbol, quantity):
     # if(not is_market_open()):
     #     return{
@@ -370,6 +403,7 @@ def buyStock(symbol, quantity):
     }
 @app.route("/sellStock/<symbol>/<tid>")
 @login_required
+@db_con
 def sellStock(symbol, tid):
     # if(not is_market_open()):
     #     return{
