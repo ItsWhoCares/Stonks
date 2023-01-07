@@ -4,6 +4,7 @@ import os
 import requests
 import time
 import json
+from functools import wraps
 
 from helpers import get_stock_info, get_stock_price
 
@@ -20,6 +21,25 @@ if not os.environ.get('IEX_API_KEY'):
 IEX_API_KEY = os.environ['IEX_API_KEY']
 UPDATE_INTERVAL = 86400
 
+def db_connected(f):
+    """
+    Decorate routes to require login.
+    https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not os.environ.get('DATABASE_URL'):
+            raise RuntimeError("DATABASE_URL NOT SET")
+        try:
+            cur.execute("SELECT * FROM users")
+            cur.fetchone()
+        except:
+            DATABASE_URL = os.environ['DATABASE_URL']
+            conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+            cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        return f(*args, **kwargs)
+    return decorated_function
+
 def getone():
     row = cur.fetchone()
     if row is None:
@@ -35,6 +55,7 @@ def getall():
         data.append(dict(row))
     return data
 
+@db_connected
 def getUserName(id):
     cur.execute("SELECT username FROM users WHERE id=%s", (id,))
     res = getone()["username"]
@@ -42,17 +63,20 @@ def getUserName(id):
 
 
 #Returns account balance formated
+@db_connected
 def getBalancef(id):
     cur.execute("SELECT balance FROM users WHERE id=%s",(id,))
     balance = getone()["balance"]
     return f"${balance:,.2f}"
 
 #Returns account balance
+@db_connected
 def getBalance(id):
     cur.execute("SELECT balance FROM users WHERE id=%s",(id,))
     balance = getone()["balance"]
     return float(balance)
 
+@db_connected
 def oneYearMonthPrices(symbol):
     cur.execute("SELECT * FROM historical_prices WHERE symbol=%s", (symbol,))
     res = getone()
@@ -82,6 +106,7 @@ def oneYearMonthPrices(symbol):
         "oneMonth": stock_data_month
     }
 
+@db_connected
 def isBookmark(id, symbol):
     cur.execute("SELECT * FROM watchlist WHERE id=%s AND symbol=%s;", (id, symbol))
     res = getone()
@@ -89,6 +114,7 @@ def isBookmark(id, symbol):
         return False
     return True
 
+@db_connected
 def getBookmark(id):
     cur.execute("SELECT symbol FROM watchlist WHERE id=%s;", (id,))
     res = getall()
@@ -100,12 +126,14 @@ def getBookmark(id):
     return bookmarks
 
 #Can user afford to buy
+@db_connected
 def canBuy(amount, id):
     cur.execute("SELECT balance FROM users where id=%s", (id,))
     balance = getone()["balance"]
     return balance >= amount
 
 #Does user own that stock
+@db_connected
 def canSell(uid, symbol, tid):
     cur.execute("SELECT * FROM transactions WHERE uid=%s and tid=%s and type=%s", (uid, tid, "B"))
     res = getone()
@@ -117,7 +145,7 @@ def canSell(uid, symbol, tid):
         return False
     return True
 
-
+@db_connected
 def makeBuyTransaction(uid, symbol, buyp, buyq):
     bill = round(buyp * float(buyq), 4)
     Time = int(time.time())
@@ -128,7 +156,7 @@ def makeBuyTransaction(uid, symbol, buyp, buyq):
     addToPortfolio(uid, tid, symbol, buyp, buyq, bill, Time)
     return True
 
-
+@db_connected
 def makeSellTransaction(uid, tid, sellp):
     cur.execute("SELECT * FROM transactions WHERE uid=%s and tid=%s", (uid, tid))
     res = getone()
@@ -139,6 +167,7 @@ def makeSellTransaction(uid, tid, sellp):
     removeFromPortfolio(uid, tid, bill)
     return True
 
+@db_connected
 def addToPortfolio(uid, tid, symbol, buyp, buyq, value, Time):
     balance = getBalance(uid)
     newBalance = round(balance - value, 4)
@@ -146,6 +175,7 @@ def addToPortfolio(uid, tid, symbol, buyp, buyq, value, Time):
     cur.execute("INSERT INTO portfolio(uid, tid, symbol, quantity, buyp, value, etime) VALUES(%s, %s, %s, %s, %s, %s, %s)", (uid, tid, symbol, buyq, buyp, value, Time))
     cur.execute("COMMIT;")
 
+@db_connected
 def removeFromPortfolio(uid, tid, bill):
     balance = getBalance(uid)
     newBalance = round(balance + bill, 4)
@@ -153,7 +183,7 @@ def removeFromPortfolio(uid, tid, bill):
     cur.execute("DELETE FROM portfolio WHERE uid=%s and tid=%s", (uid, tid))
     cur.execute("COMMIT;")
 
-
+@db_connected
 def getPortfolio(uid):
     cur.execute("SELECT * FROM portfolio WHERE uid=%s", (uid,))
     res = getall()
@@ -177,7 +207,7 @@ def getPortfolio(uid):
         })
     return stocks
 
-
+@db_connected
 def credit(id, amount):
     cur.execute("SELECT balance FROM users WHERE id=%s", (id,))
     balance = getone()["balance"]
@@ -189,6 +219,7 @@ def credit(id, amount):
     return True
 
 #print the names of all the tables in the database
+@db_connected
 def printTables():
     cur.execute("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'")
     res = getall()
