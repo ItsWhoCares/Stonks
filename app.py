@@ -406,3 +406,9 @@ def getmybalance():
 def getmytransactions():
     cur.execute("SELECT * FROM transactions WHERE id=%s;", (session["user_id"],))
     return getall()
+
+
+
+
+if __name__ == "__main__":
+    app.run(host ='0.0.0.0', port = 5001, debug = True) 
