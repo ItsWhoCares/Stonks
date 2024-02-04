@@ -1,4 +1,4 @@
-#Stonks
+# Stonks
 Stonks is a virtual stocks trading website used for learnin the art of stock trading.
 
 <p align="center" width="100%">
